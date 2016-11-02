@@ -3,16 +3,19 @@
 
 require 'json'
 
-stdin = STDIN.read
-# warn "Raw input: #{stdin}"
-
-input = JSON.parse(stdin)
-# warn "Parsed input: #{input}"
+input = JSON.parse(STDIN.read)
 
 warn 'Checking source:'
 warn input['source']
 warn "for version #{input['version']}"
 
-input['updated'] = Time.now
+output = [
+  { 'ref' => '61cebf' },
+]
 
-puts JSON.generate(input)
+if input['version']
+  output << { 'ref' => 'd74e01' }
+  output << { 'ref' => '7154fe' }
+end
+
+puts JSON.generate(output)
