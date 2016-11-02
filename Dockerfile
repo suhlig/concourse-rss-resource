@@ -10,4 +10,5 @@ RUN apk add             \
       ruby-bigdecimal   \
       ruby-json
 
+ADD lib /opt/lib
 ADD bin /opt/resource

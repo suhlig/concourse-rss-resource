@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
+require 'concourse/resource/rss'
+
 require 'aruba/rspec'
 require 'rspec/json_matcher'
 

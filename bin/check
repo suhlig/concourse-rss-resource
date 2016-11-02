@@ -1,21 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+
+require 'concourse/resource/rss/check'
 require 'json'
 
 input = JSON.parse(STDIN.read)
-
-warn 'Checking source:'
-warn input['source']
-warn "for version #{input['version']}"
-
-output = [
-  { 'ref' => '61cebf' },
-]
-
-if input['version']
-  output << { 'ref' => 'd74e01' }
-  output << { 'ref' => '7154fe' }
-end
-
+output = Concourse::Resource::RSS::Check.new.call(input)
 puts JSON.generate(output)
