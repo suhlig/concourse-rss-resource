@@ -8,6 +8,7 @@ shared_examples 'check' do
 
     expect(last_command_started).to be_successfully_executed
     expect(last_command_started.stdout).to be_json
+    expect(last_command_started.stdout).to be_json_including('source' => { 'uri' => 'git://some-uri' })
   end
 
   it 'provides diagnostic messages' do

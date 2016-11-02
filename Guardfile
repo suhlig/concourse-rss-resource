@@ -11,7 +11,7 @@ guard :rspec, cmd: 'bundle exec rspec' do
   watch(rspec.spec_helper) { rspec.spec_dir }
   watch(rspec.spec_support) { rspec.spec_dir }
   watch(rspec.spec_files)
-  watch(%r{^spec/shared/.+_spec\.rb$}){ "spec" }
+  watch(%r{^spec/shared/.+_spec\.rb$}) { 'spec' }
   watch(%r{^bin/(.+)$}) { |m| "spec/unit/#{m[1]}_spec.rb" }
 
   dsl.watch_spec_files_for(dsl.ruby.lib_files)
