@@ -1,16 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+
+require 'concourse/resource/rss/in'
 require 'json'
 
-warn "Args: #{ARGV}"
-
-stdin = STDIN.read
-# warn "Raw input: #{stdin}"
-
-input = JSON.parse(stdin)
-# warn "Parsed input: #{input}"
-
-warn "Fetching version #{input['version']} into #{ARGV.first}"
-
-puts JSON.generate(input)
+input = JSON.parse(STDIN.read)
+output = Concourse::Resource::RSS::In.new.call(input, ARGV.first)
+puts JSON.generate(output)
