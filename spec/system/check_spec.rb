@@ -4,7 +4,8 @@ require 'shared/check_spec'
 
 describe 'check', type: 'aruba' do
   before do
-    run 'bin/check'
+    `docker build -t suhlig/rss-resource:latest .`
+    run 'docker run --rm --interactive suhlig/rss-resource /opt/resource/check'
   end
 
   include_examples 'check'

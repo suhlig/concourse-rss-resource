@@ -9,7 +9,9 @@ stdin = STDIN.read
 input = JSON.parse(stdin)
 # warn "Parsed input: #{input}"
 
-warn "Checking version #{input['version']}"
+warn 'Checking source:'
+warn input['source']
+warn "for version #{input['version']}"
 
 input['updated'] = Time.now
 

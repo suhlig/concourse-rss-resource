@@ -2,15 +2,15 @@
 
 ## Test
 
-Run local tests:
+Run unit tests locally:
 
-
+```bash
+bundle exec rake
+```
 
 Build and run in a container:
 
 ```bash
-$ docker build -t suhlig/rss-resource:latest .
-$ echo '{"version": 42}' | docker run --rm --interactive suhlig/rss-resource /opt/resource/out
 ```
 
 ## Debugging
@@ -59,12 +59,3 @@ The following resources were consulted while developing this resource:
 * https://github.com/opencontrol/nvd-cve-resource
 * https://github.com/jdub/debian-sources-resource
 * https://github.com/iron-io/dockers/tree/master/ruby
-
-- name: ubuntu-sources
-  type: debian-sources
-  check_every: 1h
-  source:
-    arch: i386
-    sources:
-    - deb http://au.archive.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse
-    - deb http://security.ubuntu.com/ubuntu trusty-security main restricted universe multiverse
