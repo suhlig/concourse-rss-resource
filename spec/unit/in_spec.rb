@@ -2,16 +2,10 @@
 require 'spec_helper'
 
 describe Concourse::Resource::RSS::In do
-  let(:input) { { 'source' => { 'foo' => 'bar' } } }
-
-#  let(:destination_directory) {  }
-
-  around do |example|
-    Dir.mktmpdir do |dir|
-      @destination_directory = dir
-      example.call
-    end
-  end
+  let(:input) { {
+    'source'  => { 'foo' => 'bar' },
+    'version' => { 'ref' => '61cebf' },
+  } }
 
   context 'without destination directory' do
     let(:destination_directory) { nil }
@@ -23,20 +17,28 @@ describe Concourse::Resource::RSS::In do
     end
   end
 
+  context 'with a proper destination directory' do
+    let(:destination_directory) { Dir.mktmpdir }
 
-  it 'fetches the resource and responds with the fetched version and its metadata' do
-    output = subject.call(input, @destination_directory)
+    after do
+      FileUtils.remove_entry(destination_directory)
+    end
 
-    expect(output).to eq({
-      'version'  => { 'ref' => '61cebf' },
-      'metadata' => [
-        { 'name' => 'commit', 'value' => '61cebf' },
-        { 'name' => 'author', 'value' => 'Hulk Hogan' },
-      ]
-    })
-  end
+    it 'fetches the resource and responds with the fetched version and its metadata' do
+      output = subject.call(input, destination_directory)
 
-  xit 'fetches the resource and places it in the given directory' do
+      expect(output).to eq({
+        'version'  => { 'ref' => '61cebf' },
+        'metadata' => [
+          { 'name' => 'commit', 'value' => '61cebf' },
+          { 'name' => 'author', 'value' => 'Hulk Hogan' },
+        ]
+      })
+    end
+
+    it 'fetches the resource and places it in the given directory' do
+      fail 'TBD'
+    end
   end
 end
 
