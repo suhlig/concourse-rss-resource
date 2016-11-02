@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'json'
+
+warn "Args: #{ARGV}"
+
+stdin = STDIN.read
+# warn "Raw input: #{stdin}"
+
+input = JSON.parse(stdin)
+# warn "Parsed input: #{input}"
+
+warn "Fetching version #{input['version']} into #{ARGV.first}"
+
+puts JSON.generate(input)

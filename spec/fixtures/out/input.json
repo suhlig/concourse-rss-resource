@@ -1,0 +1,10 @@
+{
+  "params": {
+    "branch": "develop",
+    "repo": "some-repo"
+  },
+  "source": {
+    "uri": "git@...",
+    "private_key": "..."
+  }
+}

@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'json'
+
+stdin = STDIN.read
+# warn "Raw input: #{stdin}"
+
+input = JSON.parse(stdin)
+# warn "Parsed input: #{input}"
+
+warn "Checking version #{input['version']}"
+
+input['updated'] = Time.now
+
+puts JSON.generate(input)
