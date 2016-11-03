@@ -27,6 +27,8 @@ docker login
 rake docker:push
 ```
 
+This happens [automatically on the master branch](https://docs.travis-ci.com/user/docker/#Pushing-a-Docker-Image-to-a-Registry) via Travis.
+
 # References
 
 The following resources were helpful while developing this resource:
