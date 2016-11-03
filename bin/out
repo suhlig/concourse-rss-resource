@@ -2,15 +2,23 @@
 # frozen_string_literal: true
 
 require 'json'
+require 'pathname'
 
-warn "Args: #{ARGV}"
+input = JSON.parse(STDIN.read)
+warn 'Received input:'
+warn input
 
-stdin = STDIN.read
-# warn "Raw input: #{stdin}"
+source_dir = ARGV.first
 
-input = JSON.parse(stdin)
-# warn "Parsed input: #{input}"
+warn "Pushing contents of #{source_dir}:"
+warn Pathname(source_dir).children(false)
 
-warn "Pushing new version #{input['version']} from #{ARGV.first} "
+output = {
+  'version'  => { 'ref' => '61cebf' },
+  'metadata' => [
+    { 'name' => 'commit', 'value' => '61cebf' },
+    { 'name' => 'author', 'value' => 'Mick Foley' },
+  ]
+}
 
-puts JSON.generate(input)
+puts JSON.generate(output)
