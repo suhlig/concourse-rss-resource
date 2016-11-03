@@ -18,3 +18,15 @@ namespace :spec do
     t.pattern = 'spec/system/**/*_spec.rb'
   end
 end
+
+namespace :docker do
+  desc 'Build the image'
+  task :build do
+    sh 'docker build -t suhlig/concourse-rss-resource:latest .'
+  end
+
+  desc 'Publish the image'
+  task push: [:build] do
+    sh 'docker push suhlig/concourse-rss-resource'
+  end
+end

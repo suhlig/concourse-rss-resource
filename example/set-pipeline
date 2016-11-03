@@ -1,0 +1,9 @@
+#!/bin/bash -eu
+
+fly --target lite login
+
+fly \
+  set-pipeline \
+  -t lite \
+  -p postgres-release-monitor \
+  -c example/pipeline.yml
