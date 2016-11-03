@@ -25,16 +25,20 @@ describe Concourse::Resource::RSS::In do
     })
   end
 
-  xit 'fetches the resource and places it in the given directory' do
+  it 'fetches the resource and places it in the given directory' do
+    subject.call(input, destination_directory)
+
+    contents = File.read(File.join(destination_directory, 'version'))
+    expect(contents).to be_json
+    expect(contents).to be_json_as({
+      'version' => { 'ref' => '61cebf' }
+    })
   end
 
-  xit 'emits the fetched version' do
-  end
-
-  xit 'emits metadata as a list of key-value pairs' do
-  end
-
-  xit 'accepts params passed as an arbitrary JSON object' do
+  it 'accepts params passed as an arbitrary JSON object' do
+    input.merge({ 'params' => { 'some' => 'thing', 'else' => 42 } })
+    output = subject.call(input, destination_directory)
+    expect(output).to include('version')
   end
 
   context 'without destination directory' do
