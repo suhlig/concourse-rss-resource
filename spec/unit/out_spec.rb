@@ -30,8 +30,7 @@ describe Concourse::Resource::RSS::Out do
 
     expect(output).to_not be_empty
     expect(output).to include('metadata')
-    expect(output['metadata']).to include({ 'name' => 'commit', 'value' => '61cebf' })
-    expect(output['metadata']).to include({ 'name' => 'author', 'value' => 'Mick Foley' })
+    expect(output['metadata']).to include({ 'name' => 'comment', 'value' => 'This resource has not output.' })
   end
 
   context 'without source directory' do
