@@ -6,7 +6,6 @@ require 'securerandom'
 describe 'when `in` is executed in a docker container', type: 'aruba' do
   let(:host_destination_directory) { "/tmp/#{SecureRandom.uuid}" }
   let(:container_destination_directory) { '/concourse' }
-  let(:container_destination_file) { File.join(container_destination_directory, 'version') }
 
   before do
     `docker build -t suhlig/concourse-rss-resource:latest .`
@@ -27,14 +26,12 @@ describe 'when `in` is executed in a docker container', type: 'aruba' do
     # We don't necessarily have access to the docker host's file system from
     # this test, so we read back the version file by mounting another container
     # with the same volume as the one that created the file.
-    contents = `docker run --rm \
+    files = `docker run --rm \
                   --volume #{host_destination_directory}:#{container_destination_directory} \
                   suhlig/concourse-rss-resource \
-                  cat #{container_destination_file}`
+                  ls #{container_destination_directory}`
 
-    expect(contents).to be_json
-    expect(contents).to be_json_as({
-      'version' => { 'ref' => '61cebf' }
-    })
+    expect(files.lines).to_not be_empty
+    expect(files.lines).to have(5).items
   end
 end

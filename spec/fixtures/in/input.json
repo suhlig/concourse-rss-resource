@@ -1,8 +1,6 @@
 {
   "source": {
-    "uri": "git://some-uri",
-    "branch": "develop",
-    "private_key": "..."
+    "url": "https://www.postgresql.org/versions.rss"
   },
-  "version": { "ref": "61cebf" }
+  "version": { "pubDate": "Thu, 27 Oct 2016 00:00:00 +0000" }
 }

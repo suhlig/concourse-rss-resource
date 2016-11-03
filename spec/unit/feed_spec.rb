@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'rspec/collection_matchers'
-require 'webmock/rspec'
-
-WebMock.disable_net_connect!
 
 describe Concourse::Resource::RSS::Feed do
   subject { Concourse::Resource::RSS::Feed.new(url) }
