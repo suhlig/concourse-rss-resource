@@ -2,6 +2,7 @@ FROM alpine:latest
 
 RUN apk add             \
       --no-cache        \
+      ca-certificates   \
       ruby              \
       ruby-bundler      \
       ruby-io-console   \
