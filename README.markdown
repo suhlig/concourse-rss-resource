@@ -20,20 +20,6 @@ Tests assume you have a running docker daemon:
 bundle exec rake
 ```
 
-## Publishing an updated docker image
+## Docker Image
 
-```bash
-docker login
-rake docker:push
-```
-
-This happens [automatically on the master branch](https://docs.travis-ci.com/user/docker/#Pushing-a-Docker-Image-to-a-Registry) via Travis.
-
-# References
-
-The following resources were helpful while developing this resource:
-
-* http://concourse.ci/implementing-resources.html
-* https://github.com/opencontrol/nvd-cve-resource
-* https://github.com/jdub/debian-sources-resource
-* https://github.com/iron-io/dockers/tree/master/ruby
+After a `git push` to the master branch, if the build was successful, Travis [automatically pushes an updated docker image](https://docs.travis-ci.com/user/docker/#Pushing-a-Docker-Image-to-a-Registry).
