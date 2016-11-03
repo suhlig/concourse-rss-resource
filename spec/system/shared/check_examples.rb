@@ -8,7 +8,6 @@ shared_examples 'check' do
 
       expect(last_command_started).to be_successfully_executed
       expect(last_command_started.stdout).to be_json
-      expect(last_command_started.stdout).to be_json_as([{ 'ref' => '61cebf' }])
     end
   end
 
@@ -18,11 +17,6 @@ shared_examples 'check' do
 
       expect(last_command_started).to be_successfully_executed
       expect(last_command_started.stdout).to be_json
-      expect(last_command_started.stdout).to be_json_as([
-        { 'ref' => '61cebf' },
-        { 'ref' => 'd74e01' },
-        { 'ref' => '7154fe' },
-      ])
     end
   end
 end

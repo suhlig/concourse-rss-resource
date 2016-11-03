@@ -7,12 +7,5 @@ shared_examples 'in' do
 
     expect(last_command_started).to be_successfully_executed
     expect(last_command_started.stdout).to be_json
-    expect(last_command_started.stdout).to be_json_as({
-      'version'  => { 'ref' => '61cebf' },
-      'metadata' => [
-        { 'name' => 'commit', 'value' => '61cebf' },
-        { 'name' => 'author', 'value' => 'Hulk Hogan' },
-      ]
-    })
   end
 end
