@@ -1,24 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+
+require 'concourse/resource/rss/out'
 require 'json'
-require 'pathname'
 
 input = JSON.parse(STDIN.read)
-warn 'Received input:'
-warn input
-
-source_dir = ARGV.first
-
-warn "Pushing contents of #{source_dir}:"
-warn Pathname(source_dir).children(false)
-
-output = {
-  'version'  => { 'ref' => '61cebf' },
-  'metadata' => [
-    { 'name' => 'commit', 'value' => '61cebf' },
-    { 'name' => 'author', 'value' => 'Mick Foley' },
-  ]
-}
-
+output = Concourse::Resource::RSS::Out.new.call(input, ARGV.first)
 puts JSON.generate(output)

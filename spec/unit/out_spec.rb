@@ -22,7 +22,7 @@ describe Concourse::Resource::RSS::Out do
     output = subject.call(input, source_directory)
 
     expect(output).to include('version')
-    expect(output['version']).to include('timestamp')
+    expect(output['version']).to include('ref')
   end
 
   it 'emits the resulting meta data of the resource' do

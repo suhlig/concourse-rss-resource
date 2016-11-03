@@ -9,7 +9,7 @@ module Concourse
           # TODO: Do something with the files in source_directory
 
           {
-            'version'  => { 'timestamp' => Time.now },
+            'version'  => { 'ref' => '61cebf' },
             'metadata' => [
               { 'name' => 'commit', 'value' => '61cebf' },
               { 'name' => 'author', 'value' => 'Mick Foley' },
