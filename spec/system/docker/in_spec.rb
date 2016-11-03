@@ -9,11 +9,11 @@ describe 'when `in` is executed in a docker container', type: 'aruba' do
   let(:container_destination_file) { File.join(container_destination_directory, 'version') }
 
   before do
-    `docker build -t suhlig/rss-resource:latest .`
+    `docker build -t suhlig/concourse-rss-resource:latest .`
 
     run "docker run --rm --interactive \
          --volume #{host_destination_directory}:#{container_destination_directory} \
-         suhlig/rss-resource \
+         suhlig/concourse-rss-resource \
          /opt/resource/in #{container_destination_directory}"
   end
 
@@ -29,7 +29,7 @@ describe 'when `in` is executed in a docker container', type: 'aruba' do
     # with the same volume as the one that created the file.
     contents = `docker run --rm \
                   --volume #{host_destination_directory}:#{container_destination_directory} \
-                  suhlig/rss-resource \
+                  suhlig/concourse-rss-resource \
                   cat #{container_destination_file}`
 
     expect(contents).to be_json

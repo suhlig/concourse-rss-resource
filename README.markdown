@@ -1,59 +1,35 @@
-# Concourse RSS Resource
+# concourse-rss-resource
 
-## Test
+[Concourse](https://concourse.ci/ "Concourse Homepage") [resource](https://concourse.ci/implementing-resources.html "Implementing a Resource") for RSS feeds.
 
-Run unit tests locally:
+Example: [`example/pipeline.yml`](example/pipeline.yml)
+
+# Development
+
+## One-time Setup
+
+```bash
+bundle install
+```
+
+## Running the Tests
+
+Tests assume you have a running docker daemon:
 
 ```bash
 bundle exec rake
 ```
 
-Build and run in a container:
+## Publishing an updated docker image
 
 ```bash
+docker login
+rake docker:push
 ```
 
-## Debugging
+# References
 
-```bash
-$ docker run --rm --interactive --tty suhlig/rss-resource irb
-```
-
-## Example Concourse Pipeline
-
-```yaml
-resource_types:
-- name: rss-resource
-  type: docker-image
-  source:
-    repository: suhlig/rss-resource
-
-resources:
-- name: postgres-release-versions
-  type: rss-resource
-  source:
-    url: https://www.postgresql.org/versions.rss
-
-jobs:
-- name: monitor-postgres-releases
-  plan:
-  - get: postgres-release-versions
-    trigger: true
-
-  - task: alert
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source: {repository: ubuntu}
-      run:
-        path: echo
-        args: ["There is a new Postgres release"]
-```
-
-## References
-
-The following resources were consulted while developing this resource:
+The following resources were helpful while developing this resource:
 
 * http://concourse.ci/implementing-resources.html
 * https://github.com/opencontrol/nvd-cve-resource
