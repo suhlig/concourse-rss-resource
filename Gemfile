@@ -4,8 +4,11 @@ source 'https://rubygems.org'
 group 'development' do
   gem 'bundler'
   gem 'rake'
-  gem 'rspec'
   gem 'rubocop'
+
+  gem 'rspec'
+  gem 'rspec-collection_matchers'
+  gem 'webmock'
 
   gem 'aruba'
   gem 'rspec-json_matcher'

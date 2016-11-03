@@ -36,14 +36,19 @@ end
 __END__
 
 
-#
-# TODO
-#
-# from http://concourse.ci/implementing-resources.html#resource-check:
-#
-# * The list may be empty, if there are no versions available at the source.
-# * If the given version is already the latest, an array with that version as
-#   the sole entry should be listed.
-# * If your resource is unable to determine which versions are newer then the
-#   given version (e.g. if it's a git commit that was push -fed over), then
-#   the current version of your resource should be returned (i.e. the new HEAD).
+from http://concourse.ci/implementing-resources.html#resource-check:
+
+* The list may be empty, if there are no versions available at the source.
+
+* If the given version is already the latest, an array with that version as
+  the sole entry should be listed.
+
+* If your resource is unable to determine which versions are newer then the
+  given version (e.g. if it's a git commit that was push -fed over), then
+  the current version of your resource should be returned (i.e. the new HEAD).
+
+<title>9.5.5</title>
+<link>https://www.postgresql.org/docs/9.5/static/release-9-5-5.html</link>
+<description>9.5.5 is the latest release in the 9.5 series.</description>
+<pubDate>Thu, 27 Oct 2016 00:00:00 +0000</pubDate>
+<guid>https://www.postgresql.org/docs/9.5/static/release-9-5-5.html</guid>

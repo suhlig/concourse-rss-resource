@@ -7,3 +7,7 @@ require 'aruba/rspec'
 require 'rspec/json_matcher'
 
 RSpec.configuration.include RSpec::JsonMatcher
+
+def fixture(name)
+  File.join(File.dirname(__FILE__), 'fixtures', name)
+end
