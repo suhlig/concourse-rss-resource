@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'system/shared/out_spec'
+require 'system/shared/out_examples'
 require 'securerandom'
 
 describe 'when `out` is executed in a docker container', type: 'aruba' do
