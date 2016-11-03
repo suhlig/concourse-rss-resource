@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'shared/in_spec'
+require 'system/shared/in_spec'
 require 'securerandom'
 
 describe 'when `in` is executed in a docker container', type: 'aruba' do

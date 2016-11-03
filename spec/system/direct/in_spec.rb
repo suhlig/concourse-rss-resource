@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'shared/in_spec'
+require 'system/shared/in_spec'
 
 describe 'when `in` is executed directly', type: 'aruba' do
   let(:destination_directory) { 'resource-destination' }

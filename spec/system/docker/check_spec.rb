@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'shared/check_spec'
+require 'system/shared/check_spec'
 
 describe 'when `check` is executed in a docker container', type: 'aruba' do
   before do
