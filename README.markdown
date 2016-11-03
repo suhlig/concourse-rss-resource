@@ -1,5 +1,7 @@
 # concourse-rss-resource
 
+[![Build Status](https://travis-ci.org/suhlig/concourse-rss-resource.svg?branch=master)](https://travis-ci.org/suhlig/concourse-rss-resource)
+
 [Concourse](https://concourse.ci/ "Concourse Homepage") [resource](https://concourse.ci/implementing-resources.html "Implementing a Resource") for RSS feeds.
 
 Example: [`example/pipeline.yml`](example/pipeline.yml)
