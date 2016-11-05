@@ -6,10 +6,10 @@ resource_types:
       tag: latest
 
 resources:
-- name: postgres-release-versions
-  type: rss-resource
-  source:
-    url: https://www.postgresql.org/versions.rss
+  - name: postgres-release-versions
+    type: rss-resource
+    source:
+      url: https://www.postgresql.org/versions.rss
 
 jobs:
   - name: monitor-postgres-releases

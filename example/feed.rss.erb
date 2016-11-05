@@ -14,7 +14,7 @@ require 'time'
       <title><%= v %></title>
       <link>https://www.example.com/releases/<%= v %>.html</link>
       <description>On day <%= v %>, the pipeline created another great release.</description>
-      <pubDate><%= (Time.at(0) + v * 3600 * 24).rfc822 %></pubDate>
+      <pubDate><%= Time.at((v - 1) * 3600 * 24).rfc822 %></pubDate>
       <guid>https://www.example.org/releases/<%= v %></guid>
     </item>
   <% end %>
