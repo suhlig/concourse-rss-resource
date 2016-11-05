@@ -1,0 +1,15 @@
+#!/bin/bash -eu
+
+fly --target lite login
+
+fly \
+  set-pipeline \
+  -t lite \
+  -p postgres-release-monitor-slack \
+  --var "slack-webhook-url=${SLACK_WEBHOOK}" \
+  -c example/pipeline-with-slack.yml
+
+fly \
+  unpause-pipeline \
+  -t lite \
+  -p postgres-release-monitor-slack

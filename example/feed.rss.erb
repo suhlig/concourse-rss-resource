@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<%
+require 'time'
+%>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Latest versions</title>
+    <link>https://www.example.org/</link>
+    <description>Latest versions of our software</description>
+    <language>en-us</language>
+    <lastBuildDate><%= Time.now.rfc822 %></lastBuildDate>
+  <% versions.to_i.downto(1).each do |v| %>
+    <item>
+      <title><%= v %></title>
+      <link>https://www.example.com/releases/<%= v %>.html</link>
+      <description>On day <%= v %>, the pipeline created another great release.</description>
+      <pubDate><%= (Time.at(0) + v * 3600 * 24).rfc822 %></pubDate>
+      <guid>https://www.example.org/releases/<%= v %></guid>
+    </item>
+  <% end %>
+  </channel>
+</rss>
