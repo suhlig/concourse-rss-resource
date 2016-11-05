@@ -27,7 +27,6 @@ module Concourse
 
             feed.items_newer_than(version).
               sort_by(&:pubDate).
-              reverse.
               map { |i| { 'pubDate' => i.pubDate } }.
               uniq
           else

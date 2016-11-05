@@ -78,9 +78,9 @@ describe Concourse::Resource::RSS::Check do
         # only the latest.
         #
         expect(output).to eq([
-          { 'pubDate' => Time.parse('2016-10-27 00:00 +0000') },  # 9.6.1
-          { 'pubDate' => Time.parse('2015-10-08 00:00 +0000') },  # 9.0.23
           { 'pubDate' => Time.parse('2014-07-24 00:00 +0000') },  # 8.4.22
+          { 'pubDate' => Time.parse('2015-10-08 00:00 +0000') },  # 9.0.23
+          { 'pubDate' => Time.parse('2016-10-27 00:00 +0000') },  # 9.6.1
         ])
       end
     end
