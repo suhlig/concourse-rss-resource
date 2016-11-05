@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>PostgreSQL latest versions</title>
+    <link>https://www.postgresql.org/</link>
+    <description>PostgreSQL latest versions</description>
+    <atom:link href="https://www.postgresql.org/versions.rss" rel="self"></atom:link>
+    <language>en-us</language><lastBuildDate>Thu, 27 Oct 2016 00:00:00 +0000</lastBuildDate>
+  </channel>
+</rss>

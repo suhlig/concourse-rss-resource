@@ -1,7 +1,5 @@
 {
   "source": {
-    "uri": "git://some-uri",
-    "branch": "develop",
-    "private_key": "..."
+    "url": "https://www.postgresql.org/versions.rss"
   }
 }

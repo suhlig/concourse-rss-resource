@@ -12,7 +12,7 @@ module Concourse
           url = input['source'].fetch('url')
 
           feed = Feed.new(url)
-          item = feed.items.select { |i| i.pubDate == version }.first
+          item = feed.items_at(version).first
           raise "Could not find the desired item with version #{version} in #{url}" if item.nil?
 
           Serializer.new(destination_directory).serialize(item)

@@ -26,6 +26,18 @@ module Concourse
             item.guid = item.guid.content
           end
         end
+
+        def items_newer_than(version)
+          items.
+            select { |i| i.pubDate > version }.
+            unshift(items_at(version)).
+            compact.
+            flatten
+        end
+
+        def items_at(version)
+          items.select { |i| i.pubDate == version }
+        end
       end
     end
   end

@@ -2,53 +2,110 @@
 require 'spec_helper'
 
 describe Concourse::Resource::RSS::Check do
-  context 'first request (without a current version)' do
-    let(:input) { { 'source' => { 'foo' => 'bar' } } }
+  let(:feed_body) { File.read(fixture('feed/postgres-versions.rss')) }
 
-    it 'responds with just the current version' do
-      output = subject.call(input)
-      expect(output).to eq([{ 'ref' => '61cebf' }])
+  before do
+    stub_request(:get, 'https://www.postgresql.org/versions.rss').to_return(
+      status: 200,
+      body: feed_body
+    )
+  end
+
+  context 'there is no newer version than the current one' do
+    let(:current_version_pub_date) { 'Thu, 27 Oct 2016 00:00 +0000' }
+
+    context 'first request (without a current version)' do
+      let(:input) do
+        { 'source' => { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      end
+
+      it 'responds with just the current version' do
+        output = subject.call(input)
+        expect(output).to eq([{ 'pubDate' => Time.parse(current_version_pub_date) }])
+      end
+    end
+
+    context 'consecutive request (including the current version)' do
+      let(:input) do
+        {
+          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
+          'version' => { 'pubDate' => current_version_pub_date },
+        }
+      end
+
+      it 'responds with just the current version' do
+        output = subject.call(input)
+        expect(output).to eq([{ 'pubDate' => Time.parse(current_version_pub_date) }])
+      end
     end
   end
 
-  context 'consecutive request (including the current version)' do
-    let(:input) do
-      {
-        'version' => '42',
-        'source' => {
-          'foo' => 'bar'
-        },
-      }
+  context 'there are newer versions than the current one' do
+    context 'first request (without a current version)' do
+      let(:input) do
+        { 'source' => { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      end
+
+      it 'responds with just the current version' do
+        output = subject.call(input)
+        expect(output).to eq([{ 'pubDate' => Time.parse('2016-10-27 00:00 +0000') }])
+      end
     end
 
-    it 'responds with all versions since the requested one' do
-      output = subject.call(input)
+    context 'consecutive request (including the current version)' do
+      let(:current_version_pub_date) { 'Thu, 24 Jul 2014 00:00 +0000' }
 
-      expect(output).to eq([
-        { 'ref' => '61cebf' },
-        { 'ref' => 'd74e01' },
-        { 'ref' => '7154fe' },
-      ])
+      let(:input) do
+        {
+          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
+          'version' => { 'pubDate' => current_version_pub_date },
+        }
+      end
+
+      it 'responds with all versions since the requested one' do
+        output = subject.call(input)
+
+        #
+        # 2016-10-27 is a bit special because multiple versions were released
+        # on this day. The resource acually collapses all of them and returns
+        # only the latest.
+        #
+        expect(output).to eq([
+          { 'pubDate' => Time.parse('2016-10-27 00:00 +0000') },  # 9.6.1
+          { 'pubDate' => Time.parse('2015-10-08 00:00 +0000') },  # 9.0.23
+          { 'pubDate' => Time.parse('2014-07-24 00:00 +0000') },  # 8.4.22
+        ])
+      end
+    end
+  end
+
+  context 'there are no versions available at the source' do
+    let(:feed_body) { File.read(fixture('feed/empty.rss')) }
+    let(:current_version_pub_date) { 'Thu, 27 Oct 2016 00:00 +0000' }
+
+    context 'first request (without a current version)' do
+      let(:input) do
+        { 'source' => { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      end
+
+      it 'responds with an empty list' do
+        output = subject.call(input)
+        expect(output).to be_empty
+      end
+    end
+
+    context 'consecutive request (including the current version)' do
+      let(:input) do
+        {
+          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
+          'version' => { 'pubDate' => current_version_pub_date },
+        }
+      end
+
+      it 'responds with an empty list' do
+        output = subject.call(input)
+        expect(output).to be_empty
+      end
     end
   end
 end
-
-__END__
-
-
-from http://concourse.ci/implementing-resources.html#resource-check:
-
-* The list may be empty, if there are no versions available at the source.
-
-* If the given version is already the latest, an array with that version as
-  the sole entry should be listed.
-
-* If your resource is unable to determine which versions are newer then the
-  given version (e.g. if it's a git commit that was push -fed over), then
-  the current version of your resource should be returned (i.e. the new HEAD).
-
-<title>9.5.5</title>
-<link>https://www.postgresql.org/docs/9.5/static/release-9-5-5.html</link>
-<description>9.5.5 is the latest release in the 9.5 series.</description>
-<pubDate>Thu, 27 Oct 2016 00:00:00 +0000</pubDate>
-<guid>https://www.postgresql.org/docs/9.5/static/release-9-5-5.html</guid>

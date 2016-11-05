@@ -4,7 +4,6 @@
     "repo": "some-repo"
   },
   "source": {
-    "uri": "git@...",
-    "private_key": "..."
+    "url": "https://www.postgresql.org/versions.rss"
   }
 }

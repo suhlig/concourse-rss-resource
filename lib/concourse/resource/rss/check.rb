@@ -1,19 +1,33 @@
 # frozen_string_literal: true
+require 'concourse/resource/rss/feed'
+
+#
+# Not sure what to do with this scenario from http://concourse.ci/implementing-resources.html#resource-check:
+#
+#   If your resource is unable to determine which versions are newer then the
+#   given version (e.g. if it's a git commit that was push -fed over), then
+#   the current version of your resource should be returned (i.e. the new HEAD).
+#
 module Concourse
   module Resource
     module RSS
       class Check
         def call(input)
-          output = [
-            { 'ref' => '61cebf' },
-          ]
+          url = input['source'].fetch('url')
+          feed = Feed.new(url)
 
-          if input['version']
-            output << { 'ref' => 'd74e01' }
-            output << { 'ref' => '7154fe' }
+          if input.key?('version')
+            version = Time.parse(input['version'].fetch('pubDate'))
+
+            feed.items_newer_than(version).
+              sort_by(&:pubDate).
+              reverse.
+              map { |i| { 'pubDate' => i.pubDate } }.
+              uniq
+          else
+            return [] if feed.items.empty?
+            [{ 'pubDate' => feed.items.first.pubDate }]
           end
-
-          output
         end
       end
     end
