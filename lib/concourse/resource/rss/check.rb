@@ -16,7 +16,7 @@ module Concourse
           url = input['source'].fetch('url')
           feed = Feed.new(url)
 
-          if input.key?('version')
+          if input['version'] && input['version'].key?('pubDate')
             version = Time.parse(input['version'].fetch('pubDate'))
 
             feed.items_newer_than(version).

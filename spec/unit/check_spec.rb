@@ -16,7 +16,10 @@ describe Concourse::Resource::RSS::Check do
 
     context 'first request (without a current version)' do
       let(:input) do
-        { 'source' => { 'url' => 'https://www.postgresql.org/versions.rss' } }
+        {
+          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
+          'version' => nil,
+        }
       end
 
       it 'responds with just the current version' do
@@ -43,7 +46,10 @@ describe Concourse::Resource::RSS::Check do
   context 'there are newer versions than the current one' do
     context 'first request (without a current version)' do
       let(:input) do
-        { 'source' => { 'url' => 'https://www.postgresql.org/versions.rss' } }
+        {
+          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
+          'version' => nil,
+        }
       end
 
       it 'responds with just the current version' do

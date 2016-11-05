@@ -1,5 +1,6 @@
 {
   "source": {
     "url": "https://www.postgresql.org/versions.rss"
-  }
+  },
+  "version": null
 }
