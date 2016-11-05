@@ -18,7 +18,7 @@ module Concourse
           Serializer.new(destination_directory).serialize(item)
 
           {
-            'version'  => { 'pubDate' => version },
+            'version'  => { 'pubDate' => item.pubDate },
             'metadata' => [
               { 'name' => 'commit', 'value' => '61cebf' },
               { 'name' => 'author', 'value' => 'Hulk Hogan' },
