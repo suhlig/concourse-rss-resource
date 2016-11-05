@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'spec_helper'
+require 'concourse/resource/rss/errors'
 
 describe Concourse::Resource::RSS::Check do
   let(:feed_body) { File.read(fixture('feed/postgres-versions.rss')) }
@@ -85,8 +86,7 @@ describe Concourse::Resource::RSS::Check do
     end
   end
 
-  context 'there are no versions available at the source' do
-    let(:feed_body) { File.read(fixture('feed/empty.rss')) }
+  shared_examples 'unavailable' do
     let(:current_version_pub_date) { 'Thu, 27 Oct 2016 00:00 +0000' }
 
     context 'first request (without a current version)' do
@@ -113,5 +113,19 @@ describe Concourse::Resource::RSS::Check do
         expect(output).to be_empty
       end
     end
+  end
+
+  context 'the feed is not available' do
+    before do
+      allow_any_instance_of(Concourse::Resource::RSS::Feed).to receive(:initialize).
+        and_raise Concourse::Resource::RSS::InvalidFeed.new('example.com')
+    end
+
+    include_examples 'unavailable'
+  end
+
+  context 'the channel has no items' do
+    let(:feed_body) { File.read(fixture('feed/empty.rss')) }
+    include_examples 'unavailable'
   end
 end

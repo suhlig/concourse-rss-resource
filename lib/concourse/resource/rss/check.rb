@@ -14,7 +14,13 @@ module Concourse
       class Check
         def call(input)
           url = input['source'].fetch('url')
-          feed = Feed.new(url)
+
+          begin
+            feed = Feed.new(url)
+          rescue InvalidFeed => e
+            warn e.message
+            return []
+          end
 
           if input['version'] && input['version'].key?('pubDate')
             version = Time.parse(input['version'].fetch('pubDate'))

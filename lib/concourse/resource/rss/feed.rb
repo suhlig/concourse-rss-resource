@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'rss'
 require 'open-uri'
+require 'concourse/resource/rss/errors'
 
 module Concourse
   module Resource
@@ -11,6 +12,8 @@ module Concourse
         def initialize(url)
           open(url) do |rss|
             feed = ::RSS::Parser.parse(rss)
+            raise InvalidFeed.new(url) unless feed
+
             @title = feed.channel.title.chomp
             @last_build_date = feed.channel.lastBuildDate
             @items = feed.items.map { |item| cleanup(item) }
