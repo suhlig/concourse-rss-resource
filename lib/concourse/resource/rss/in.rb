@@ -20,8 +20,8 @@ module Concourse
           {
             'version'  => { 'pubDate' => item.pubDate },
             'metadata' => [
-              { 'name' => 'commit', 'value' => '61cebf' },
-              { 'name' => 'author', 'value' => 'Hulk Hogan' },
+              { 'name' => 'title', 'value' => item.title },
+              { 'name' => 'description', 'value' => item.description },
             ]
           }
         end

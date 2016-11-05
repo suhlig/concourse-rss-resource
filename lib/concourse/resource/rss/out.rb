@@ -6,10 +6,10 @@ module Concourse
         def call(input, source_directory)
           raise 'Error: No source directory given' if source_directory.nil?
 
-          # Do something with the files in source_directory
+          # If this resource had output, we could do something with the files in source_directory
 
           {
-            'version'  => { 'ref' => 'none' },
+            'version'  => { 'pubDate' => 'none' },
             'metadata' => [
               { 'name' => 'comment', 'value' => 'This resource has not output.' },
             ]

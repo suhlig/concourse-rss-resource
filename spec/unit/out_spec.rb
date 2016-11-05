@@ -15,14 +15,15 @@ describe Concourse::Resource::RSS::Out do
     FileUtils.remove_entry(source_directory) if source_directory
   end
 
-  xit 'pushes the resource from the contents of the source directory' do
+  it 'pushes the resource from the contents of the source directory' do
+    skip "This resource has no output, so we don't push anything"
   end
 
   it 'emits the resulting version of the resource' do
     output = subject.call(input, source_directory)
 
     expect(output).to include('version')
-    expect(output['version']).to include('ref')
+    expect(output['version']).to include('pubDate')
   end
 
   it 'emits the resulting meta data of the resource' do

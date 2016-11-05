@@ -37,8 +37,8 @@ describe Concourse::Resource::RSS::In do
 
       expect(output).to include({
         'metadata' => [
-          { 'name' => 'commit', 'value' => '61cebf' },
-          { 'name' => 'author', 'value' => 'Hulk Hogan' },
+          { 'name' => 'title', 'value' => '9.6.1' },
+          { 'name' => 'description', 'value' => '9.6.1 is the latest release in the 9.6 series.' },
         ]
         })
     end
