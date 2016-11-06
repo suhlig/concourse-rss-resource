@@ -2,23 +2,54 @@
 
 [![Build Status](https://travis-ci.org/suhlig/concourse-rss-resource.svg?branch=master)](https://travis-ci.org/suhlig/concourse-rss-resource)
 
-[Concourse](https://concourse.ci/ "Concourse Homepage") [resource](https://concourse.ci/implementing-resources.html "Implementing a Resource") for RSS feeds.
+[Concourse](https://concourse.ci/ "Concourse Homepage") [resource](https://concourse.ci/implementing-resources.html "Implementing a Resource") for RSS feeds. See the [example](example/README.markdown) folder for a pipeline that sends a Slack notification when a new Postgres release is available.
+
+# Resource Type Configuration
+
+```yaml
+resource_types:
+  - name: rss-resource
+    type: docker-image
+    source:
+      repository: suhlig/concourse-rss-resource
+      tag: latest
+```
+
+# Source Configuration
+
+* `url`: *Required.* The URL of the feed. Anything that can be parsed by Ruby's [RSS::Parser](http://ruby-doc.org/stdlib-2.3.1/libdoc/rss/rdoc/RSS/Parser.html) should be good.
 
 # Behavior
 
-On `check`, this resource will fetch the feed (specified in `source['url']`) and version it by the channel's `lastBuildDate` attribute. Upon `in`, it will again fetch the feed and then select the first item of the feed that has the same `pubDate` as the feed's `lastBuildDate`. For each attribute of the that item, it writes the attribute value to a file into the destination directory.
+## `check`: Extract items from the feed
 
-**Example**: As of writing this README, the [PostgreSQL versions feed](https://www.postgresql.org/versions.rss) has a `lastBuildDate` of "Thu, 27 Oct 2016 00:00:00 +0000". The feed items `9.6.1`, `9.5.5`, `9.4.10`, `9.3.15`, `9.2.19`, `9.1.24`, and `9.0.23` all have that `pubDate`, of which `9.6.1` is the first. The resource will now write the following files to the destination directory:
+The resource will fetch the feed specified in `url` and will version items by their `pubDate` attribute.
 
-| File Name   | Content                                                       |
-| ----------- | ------------------------------------------------------------- |
-|`title`      | 9.6.1                                                         |
-|`link`       | https://www.postgresql.org/docs/9.6/static/release-9-6-1.html |
-|`description`| 9.6.1 is the latest release in the 9.6 series.                |
-|`pubDate`    | Thu, 27 Oct 2016 00:00:00 +0000                               |
-|`guid`       | https://www.postgresql.org/docs/9.6/static/release-9-6-1.html |
+  **Example**
+
+  As of writing this README, the [PostgreSQL versions feed](https://www.postgresql.org/versions.rss) has a number of items with a `pubDate` of "`Thu, 27 Oct 2016 00:00:00 +0000`" (`9.6.1`, `9.5.5`, `9.4.10`, `9.3.15`, `9.2.19`, `9.1.24`, and `9.0.23`), of which `9.6.1` is the first and is being returned from `check`.
+
+## `in`: Fetch an item from the feed
+
+The resource will select the first item of the feed that has the requested `pubDate`. For each attribute of the that item, it writes the attribute value to a file into the destination directory.
+
+  **Example**
+
+  Asked for the version with a `pubDate` of "`Thu, 27 Oct 2016 00:00:00 +0000`" on `in`, the resource will write the following files to the destination directory:
+
+  | File Name   | Content                                                       |
+  | ----------- | ------------------------------------------------------------- |
+  |`title`      | 9.6.1                                                         |
+  |`link`       | https://www.postgresql.org/docs/9.6/static/release-9-6-1.html |
+  |`description`| 9.6.1 is the latest release in the 9.6 series.                |
+  |`pubDate`    | Thu, 27 Oct 2016 00:00:00 +0000                               |
+  |`guid`       | https://www.postgresql.org/docs/9.6/static/release-9-6-1.html |
 
 You can then read these files in a task and, for example, construct a [Slack notification](https://github.com/cloudfoundry-community/slack-notification-resource) saying which new PostgreSQL version is available.
+
+## `out`: Not implemented
+
+There is output from this resource.
 
 # Development
 
