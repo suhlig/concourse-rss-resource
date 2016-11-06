@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <%
 require 'time'
-%>
+upper = latest.to_i rescue 1
+lower = [upper - 50, 0].max + 1
+-%>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
-    <title>Latest versions</title>
+    <title>Latest versions for example.org</title>
     <link>https://www.example.org/</link>
-    <description>Latest versions of our software</description>
+    <description>Feed of latest versions of our software</description>
     <language>en-us</language>
     <lastBuildDate><%= Time.now.rfc822 %></lastBuildDate>
-  <% versions.to_i.downto(1).each do |v| %>
+  <% upper.downto(lower).each do |v| %>
     <item>
       <title><%= v %></title>
       <link>https://www.example.com/releases/<%= v %>.html</link>
-      <description>On day <%= v %>, the pipeline created another great release.</description>
+      <description>On day <%= v %>, the we created another great release.</description>
       <pubDate><%= Time.at((v - 1) * 3600 * 24).rfc822 %></pubDate>
       <guid>https://www.example.org/releases/<%= v %></guid>
     </item>
-  <% end %>
+  <% end -%>
   </channel>
 </rss>
