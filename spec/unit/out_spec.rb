@@ -2,6 +2,7 @@
 require 'spec_helper'
 
 describe Concourse::Resource::RSS::Out do
+  subject { Concourse::Resource::RSS::Out.new(source_directory) }
   let(:source_directory) { Dir.mktmpdir }
   let(:source) { { 'uri' => 'git@...', 'private_key' => '...' } }
   let(:params) { { 'branch' => 'develop', 'repo' => 'some-repo' } }

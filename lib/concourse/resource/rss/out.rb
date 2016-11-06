@@ -3,6 +3,13 @@ module Concourse
   module Resource
     module RSS
       class Out
+        attr_reader :source_directory
+
+        def initialize(source_directory)
+          raise ArgumentError.new('No source directory given') if source_directory.nil?
+          @source_directory = source_directory
+        end
+
         def call(source, source_directory, params=nil)
           raise 'Error: No source directory given' if source_directory.nil?
 

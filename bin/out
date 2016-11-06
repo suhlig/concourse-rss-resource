@@ -7,6 +7,6 @@ require 'concourse/resource/rss/out'
 require 'json'
 
 input = JSON.parse(STDIN.read)
-script = Concourse::Resource::RSS::Out.new
-output = script.call(input['source'], ARGV.first, input['params'])
+script = Concourse::Resource::RSS::Out.new(ARGV.first)
+output = script.call(input['source'], input['params'])
 puts JSON.generate(output)

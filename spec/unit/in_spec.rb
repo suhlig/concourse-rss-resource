@@ -3,6 +3,7 @@ require 'spec_helper'
 require 'concourse/resource/rss/errors'
 
 describe Concourse::Resource::RSS::In do
+  subject { Concourse::Resource::RSS::In.new(destination_directory) }
   let(:destination_directory) { Dir.mktmpdir }
   let(:desired_pub_date) { 'Thu, 27 Oct 2016 00:00:00 +0000' }
 
@@ -22,7 +23,7 @@ describe Concourse::Resource::RSS::In do
 
   context 'the requested version of the resource is available' do
     it 'responds with the fetched version' do
-      output = subject.call(source, version, destination_directory)
+      output = subject.call(source, version)
 
       expect(output).to include({
         'version' => { 'pubDate' => Time.parse(desired_pub_date) },
@@ -30,7 +31,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it 'responds with metadata of the fetched version' do
-      output = subject.call(source, version, destination_directory)
+      output = subject.call(source, version)
 
       expect(output).to include({
         'metadata' => [
@@ -41,7 +42,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's title in the destination directory" do
-      subject.call(source, version, destination_directory)
+      subject.call(source, version)
 
       title = Pathname(destination_directory).join('title')
       expect(title).to be
@@ -49,7 +50,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's link in the destination directory" do
-      subject.call(source, version, destination_directory)
+      subject.call(source, version)
 
       link = Pathname(destination_directory).join('link')
       expect(link).to be
@@ -57,7 +58,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's description in the destination directory" do
-      subject.call(source, version, destination_directory)
+      subject.call(source, version)
 
       description = Pathname(destination_directory).join('description')
       expect(description).to be
@@ -65,7 +66,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's pubDate in the destination directory" do
-      subject.call(source, version, destination_directory)
+      subject.call(source, version)
 
       pub_date = Pathname(destination_directory).join('pubDate')
       expect(pub_date).to be
@@ -73,7 +74,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's guid in the destination directory" do
-      subject.call(source, version, destination_directory)
+      subject.call(source, version)
 
       guid = Pathname(destination_directory).join('guid')
       expect(guid).to be
@@ -83,7 +84,7 @@ describe Concourse::Resource::RSS::In do
 
   it 'accepts params passed as an arbitrary JSON object' do
     params = { 'params' => { 'some' => 'thing', 'else' => 42 } }
-    output = subject.call(source, version, destination_directory, params)
+    output = subject.call(source, version, params)
     expect(output).to include('version')
   end
 
@@ -92,7 +93,7 @@ describe Concourse::Resource::RSS::In do
 
     it 'raises an error' do
       expect {
-        subject.call(source, version, destination_directory)
+        subject.call(source, version)
       }.to raise_error(/destination directory/)
     end
   end
@@ -102,7 +103,7 @@ describe Concourse::Resource::RSS::In do
 
     it 'raises an error' do
       expect {
-        subject.call(source, version, destination_directory)
+        subject.call(source, version)
       }.to raise_error(Concourse::Resource::RSS::VersionUnavailable)
     end
   end
