@@ -9,7 +9,7 @@ module Concourse
           # If this resource had output, we could do something with the files in source_directory
 
           {
-            'version'  => { 'pubDate' => 'none' },
+            'version'  => { 'pubDate' => nil },
             'metadata' => [
               { 'name' => 'comment', 'value' => 'This resource has not output.' },
             ]
