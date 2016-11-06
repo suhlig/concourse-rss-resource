@@ -3,10 +3,12 @@ module Concourse
   module Resource
     module RSS
       class Out
-        def call(input, source_directory)
+        def call(source, source_directory, params=nil)
           raise 'Error: No source directory given' if source_directory.nil?
 
-          # If this resource had output, we could do something with the files in source_directory
+          # If this resource had output, we could do something with
+          # the files in source_directory based on source, and potentially also
+          # using params
 
           {
             'version'  => { 'pubDate' => nil },

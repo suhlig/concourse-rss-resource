@@ -2,14 +2,9 @@
 require 'spec_helper'
 
 describe Concourse::Resource::RSS::Out do
-  let(:input) {
-    {
-      'params' => { 'branch' => 'develop', 'repo' => 'some-repo' },
-      'source' => { 'uri' => 'git@...', 'private_key' => '...' },
-    }
-  }
-
   let(:source_directory) { Dir.mktmpdir }
+  let(:source) { { 'uri' => 'git@...', 'private_key' => '...' } }
+  let(:params) { { 'branch' => 'develop', 'repo' => 'some-repo' } }
 
   after do
     FileUtils.remove_entry(source_directory) if source_directory
@@ -20,14 +15,14 @@ describe Concourse::Resource::RSS::Out do
   end
 
   it 'emits the resulting version of the resource' do
-    output = subject.call(input, source_directory)
+    output = subject.call(source, source_directory, params)
 
     expect(output).to include('version')
-    expect(output['version']).to include('pubDate')
+    expect(output['version']).to include('pubDate' => nil)
   end
 
   it 'emits the resulting meta data of the resource' do
-    output = subject.call(input, source_directory)
+    output = subject.call(source, source_directory, params)
 
     expect(output).to_not be_empty
     expect(output).to include('metadata')
@@ -39,7 +34,7 @@ describe Concourse::Resource::RSS::Out do
 
     it 'raises an error' do
       expect {
-        subject.call(input, source_directory)
+        subject.call(source, source_directory, params)
       }.to raise_error(/source directory/)
     end
   end

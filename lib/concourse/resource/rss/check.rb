@@ -12,8 +12,8 @@ module Concourse
   module Resource
     module RSS
       class Check
-        def call(input)
-          url = input['source'].fetch('url')
+        def call(source, version)
+          url = source.fetch('url')
 
           begin
             feed = Feed.new(url)
@@ -22,8 +22,8 @@ module Concourse
             return []
           end
 
-          if input['version'] && input['version'].key?('pubDate')
-            version = Time.parse(input['version'].fetch('pubDate'))
+          if version && version.key?('pubDate')
+            version = Time.parse(version.fetch('pubDate'))
 
             feed.items_newer_than(version).
               sort_by(&:pubDate).

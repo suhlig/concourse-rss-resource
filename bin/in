@@ -7,5 +7,6 @@ require 'concourse/resource/rss/in'
 require 'json'
 
 input = JSON.parse(STDIN.read)
-output = Concourse::Resource::RSS::In.new.call(input, ARGV.first)
+script = Concourse::Resource::RSS::In.new
+output = script.call(input['source'], input['version'], ARGV.first)
 puts JSON.generate(output)

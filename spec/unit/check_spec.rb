@@ -16,29 +16,21 @@ describe Concourse::Resource::RSS::Check do
     let(:current_version_pub_date) { 'Thu, 27 Oct 2016 00:00 +0000' }
 
     context 'first request (without a current version)' do
-      let(:input) do
-        {
-          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
-          'version' => nil,
-        }
-      end
+      let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      let(:version) { nil }
 
       it 'responds with just the current version' do
-        output = subject.call(input)
+        output = subject.call(source, version)
         expect(output).to eq([{ 'pubDate' => Time.parse(current_version_pub_date) }])
       end
     end
 
     context 'consecutive request (including the current version)' do
-      let(:input) do
-        {
-          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
-          'version' => { 'pubDate' => current_version_pub_date },
-        }
-      end
+      let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      let(:version) { { 'pubDate' => current_version_pub_date } }
 
       it 'responds with just the current version' do
-        output = subject.call(input)
+        output = subject.call(source, version)
         expect(output).to eq([{ 'pubDate' => Time.parse(current_version_pub_date) }])
       end
     end
@@ -46,31 +38,22 @@ describe Concourse::Resource::RSS::Check do
 
   context 'there are newer versions than the current one' do
     context 'first request (without a current version)' do
-      let(:input) do
-        {
-          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
-          'version' => nil,
-        }
-      end
+      let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      let(:version) { nil }
 
       it 'responds with just the current version' do
-        output = subject.call(input)
+        output = subject.call(source, version)
         expect(output).to eq([{ 'pubDate' => Time.parse('2016-10-27 00:00 +0000') }])
       end
     end
 
     context 'consecutive request (including the current version)' do
       let(:current_version_pub_date) { 'Thu, 24 Jul 2014 00:00 +0000' }
-
-      let(:input) do
-        {
-          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
-          'version' => { 'pubDate' => current_version_pub_date },
-        }
-      end
+      let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      let(:version) { { 'pubDate' => current_version_pub_date } }
 
       it 'responds with all versions since the requested one' do
-        output = subject.call(input)
+        output = subject.call(source, version)
 
         #
         # 2016-10-27 is a bit special because multiple versions were released
@@ -90,26 +73,21 @@ describe Concourse::Resource::RSS::Check do
     let(:current_version_pub_date) { 'Thu, 27 Oct 2016 00:00 +0000' }
 
     context 'first request (without a current version)' do
-      let(:input) do
-        { 'source' => { 'url' => 'https://www.postgresql.org/versions.rss' } }
-      end
+      let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      let(:version) { nil }
 
       it 'responds with an empty list' do
-        output = subject.call(input)
+        output = subject.call(source, version)
         expect(output).to be_empty
       end
     end
 
     context 'consecutive request (including the current version)' do
-      let(:input) do
-        {
-          'source' => { 'url' => 'https://www.postgresql.org/versions.rss' },
-          'version' => { 'pubDate' => current_version_pub_date },
-        }
-      end
+      let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+      let(:version) { { 'pubDate' => current_version_pub_date } }
 
       it 'responds with an empty list' do
-        output = subject.call(input)
+        output = subject.call(source, version)
         expect(output).to be_empty
       end
     end

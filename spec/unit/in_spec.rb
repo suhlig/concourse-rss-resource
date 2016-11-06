@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 require 'spec_helper'
+require 'concourse/resource/rss/errors'
 
 describe Concourse::Resource::RSS::In do
   let(:destination_directory) { Dir.mktmpdir }
-  let(:pub_date) { 'Thu, 27 Oct 2016 00:00:00 +0000' }
+  let(:desired_pub_date) { 'Thu, 27 Oct 2016 00:00:00 +0000' }
 
   before do
     stub_request(:get, 'https://www.postgresql.org/versions.rss').to_return(
@@ -16,24 +17,20 @@ describe Concourse::Resource::RSS::In do
     FileUtils.remove_entry(destination_directory) if destination_directory
   end
 
-  let(:input) do
-    {
-      'source'  => { 'url' => 'https://www.postgresql.org/versions.rss' },
-      'version' => { 'pubDate' => pub_date },
-    }
-  end
+  let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+  let(:version) { { 'pubDate' => desired_pub_date } }
 
   context 'the requested version of the resource is available' do
     it 'responds with the fetched version' do
-      output = subject.call(input, destination_directory)
+      output = subject.call(source, version, destination_directory)
 
       expect(output).to include({
-        'version' => { 'pubDate' => Time.parse(pub_date) },
+        'version' => { 'pubDate' => Time.parse(desired_pub_date) },
         })
     end
 
     it 'responds with metadata of the fetched version' do
-      output = subject.call(input, destination_directory)
+      output = subject.call(source, version, destination_directory)
 
       expect(output).to include({
         'metadata' => [
@@ -44,7 +41,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's title in the destination directory" do
-      subject.call(input, destination_directory)
+      subject.call(source, version, destination_directory)
 
       title = Pathname(destination_directory).join('title')
       expect(title).to be
@@ -52,7 +49,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's link in the destination directory" do
-      subject.call(input, destination_directory)
+      subject.call(source, version, destination_directory)
 
       link = Pathname(destination_directory).join('link')
       expect(link).to be
@@ -60,7 +57,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's description in the destination directory" do
-      subject.call(input, destination_directory)
+      subject.call(source, version, destination_directory)
 
       description = Pathname(destination_directory).join('description')
       expect(description).to be
@@ -68,7 +65,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's pubDate in the destination directory" do
-      subject.call(input, destination_directory)
+      subject.call(source, version, destination_directory)
 
       pub_date = Pathname(destination_directory).join('pubDate')
       expect(pub_date).to be
@@ -76,7 +73,7 @@ describe Concourse::Resource::RSS::In do
     end
 
     it "places the resource's guid in the destination directory" do
-      subject.call(input, destination_directory)
+      subject.call(source, version, destination_directory)
 
       guid = Pathname(destination_directory).join('guid')
       expect(guid).to be
@@ -85,8 +82,8 @@ describe Concourse::Resource::RSS::In do
   end
 
   it 'accepts params passed as an arbitrary JSON object' do
-    input.merge({ 'params' => { 'some' => 'thing', 'else' => 42 } })
-    output = subject.call(input, destination_directory)
+    params = { 'params' => { 'some' => 'thing', 'else' => 42 } }
+    output = subject.call(source, version, destination_directory, params)
     expect(output).to include('version')
   end
 
@@ -95,13 +92,18 @@ describe Concourse::Resource::RSS::In do
 
     it 'raises an error' do
       expect {
-        subject.call(input, destination_directory)
+        subject.call(source, version, destination_directory)
       }.to raise_error(/destination directory/)
     end
   end
 
   context 'the desired resource version is unavailable' do
-    xit 'raises an error' do
+    let(:desired_pub_date) { 'Thu, 27 Oct 2046 00:00:00 +0000' }
+
+    it 'raises an error' do
+      expect {
+        subject.call(source, version, destination_directory)
+      }.to raise_error(Concourse::Resource::RSS::VersionUnavailable)
     end
   end
 end
