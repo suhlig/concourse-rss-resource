@@ -84,15 +84,6 @@ describe Concourse::Resource::RSS::In do
     end
   end
 
-  xcontext 'the requested version is unavailable' do
-    let(:input) do
-      {
-        'source'  => { 'url' => 'https://www.postgresql.org/versions.rss' },
-        'version' => { 'pubDate' => 'Thu, 27 Oct 2017 00:00:00 +0000' },
-      }
-    end
-  end
-
   it 'accepts params passed as an arbitrary JSON object' do
     input.merge({ 'params' => { 'some' => 'thing', 'else' => 42 } })
     output = subject.call(input, destination_directory)
