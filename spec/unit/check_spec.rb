@@ -93,10 +93,19 @@ describe Concourse::Resource::RSS::Check do
     end
   end
 
+  context 'the feed is not invalid' do
+    before do
+      allow(Concourse::Resource::RSS::Feed).to receive(:new).
+        and_raise Concourse::Resource::RSS::FeedInvalid.new('example.com')
+    end
+
+    include_examples 'unavailable'
+  end
+
   context 'the feed is not available' do
     before do
-      allow_any_instance_of(Concourse::Resource::RSS::Feed).to receive(:initialize).
-        and_raise Concourse::Resource::RSS::InvalidFeed.new('example.com')
+      allow(Concourse::Resource::RSS::Feed).to receive(:new).
+        and_raise Concourse::Resource::RSS::FeedUnavailable.new(StandardError.new('not there'))
     end
 
     include_examples 'unavailable'

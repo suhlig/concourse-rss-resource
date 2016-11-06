@@ -17,7 +17,7 @@ module Concourse
 
           begin
             feed = Feed.new(url)
-          rescue InvalidFeed => e
+          rescue FeedInvalid, FeedUnavailable => e
             warn e.message
             return []
           end

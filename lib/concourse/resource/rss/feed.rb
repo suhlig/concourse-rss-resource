@@ -12,12 +12,14 @@ module Concourse
         def initialize(url)
           open(url) do |rss|
             feed = ::RSS::Parser.parse(rss)
-            raise InvalidFeed.new(url) unless feed
+            raise FeedInvalid.new(url) unless feed
 
             @title = feed.channel.title.chomp
             @last_build_date = feed.channel.lastBuildDate
             @items = feed.items.map { |item| cleanup(item) }
           end
+        rescue OpenURI::HTTPError => e
+          raise FeedUnavailable.new(e)
         end
 
         def cleanup(item)

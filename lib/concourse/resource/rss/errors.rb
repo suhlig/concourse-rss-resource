@@ -2,9 +2,15 @@
 module Concourse
   module Resource
     module RSS
-      class InvalidFeed < StandardError
+      class FeedInvalid < StandardError
         def initialize(url)
           super("Could not parse contents of #{url}")
+        end
+      end
+
+      class FeedUnavailable < StandardError
+        def initialize(e)
+          super(e)
         end
       end
 

@@ -60,4 +60,16 @@ describe Concourse::Resource::RSS::Feed do
       expect { subject } .to raise_error /parse contents/
     end
   end
+
+  context 'with a feed that is temporarily unavailable' do
+    before do
+      stub_request(:get, url).to_return(
+        status: 404
+      )
+    end
+
+    it 'returns an empty response' do
+      expect { subject.items }.to raise_error /404/
+    end
+  end
 end
