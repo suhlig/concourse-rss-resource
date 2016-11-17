@@ -14,13 +14,7 @@ module Concourse
       class Check
         def call(source, version)
           url = source.fetch('url')
-
-          begin
-            feed = Feed.new(url)
-          rescue FeedInvalid, FeedUnavailable => e
-            warn e.message
-            return []
-          end
+          feed = Feed.new(url)
 
           if version && version.key?('pubDate')
             version = Time.parse(version.fetch('pubDate'))

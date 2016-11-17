@@ -69,16 +69,15 @@ describe Concourse::Resource::RSS::Check do
     end
   end
 
-  shared_examples 'unavailable' do
+  shared_examples 'feed is unavailable' do
     let(:current_version_pub_date) { 'Thu, 27 Oct 2016 00:00 +0000' }
 
     context 'first request (without a current version)' do
       let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
       let(:version) { nil }
 
-      it 'responds with an empty list' do
-        output = subject.call(source, version)
-        expect(output).to be_empty
+      it 'raises an error' do
+        expect { subject.call(source, version) }.to raise_error StandardError
       end
     end
 
@@ -86,20 +85,22 @@ describe Concourse::Resource::RSS::Check do
       let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
       let(:version) { { 'pubDate' => current_version_pub_date } }
 
-      it 'responds with an empty list' do
-        output = subject.call(source, version)
-        expect(output).to be_empty
+      it 'raises an error' do
+        expect { subject.call(source, version) }.to raise_error do |error|
+          expect(error).to be_instance_of(Concourse::Resource::RSS::FeedInvalid).
+            or be_instance_of Concourse::Resource::RSS::FeedUnavailable
+        end
       end
     end
   end
 
-  context 'the feed is not invalid' do
+  context 'the feed is not valid' do
     before do
       allow(Concourse::Resource::RSS::Feed).to receive(:new).
         and_raise Concourse::Resource::RSS::FeedInvalid.new('example.com')
     end
 
-    include_examples 'unavailable'
+    include_examples 'feed is unavailable'
   end
 
   context 'the feed is not available' do
@@ -108,11 +109,17 @@ describe Concourse::Resource::RSS::Check do
         and_raise Concourse::Resource::RSS::FeedUnavailable.new(StandardError.new('not there'))
     end
 
-    include_examples 'unavailable'
+    include_examples 'feed is unavailable'
   end
 
   context 'the channel has no items' do
     let(:feed_body) { File.read(fixture('feed/empty.rss')) }
-    include_examples 'unavailable'
+    let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
+    let(:version) { nil }
+
+    it 'responds with an empty list' do
+      output = subject.call(source, version)
+      expect(output).to be_empty
+    end
   end
 end
