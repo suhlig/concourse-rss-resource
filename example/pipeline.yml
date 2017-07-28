@@ -9,6 +9,7 @@ resources:
   - name: postgres-release-versions
     type: rss-resource
     source:
+            # url: https://dl.dropboxusercontent.com/u/165087/example-releases.rss
       url: https://www.postgresql.org/versions.rss
 
 jobs:

@@ -30,7 +30,7 @@ jobs:
 
     - put: slack-alert
       params:
-        channel: '#random'
+        channel: '#development'
         text_file:  postgres-release-versions/link
         text: |
           New Postgres version available: $TEXT_FILE_CONTENT
