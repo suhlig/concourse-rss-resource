@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'concourse/resource/rss/feed'
 
 #
@@ -16,7 +17,7 @@ module Concourse
           url = source.fetch('url')
           feed = Feed.new(url)
 
-          if version && version.key?('pubDate')
+          if version&.key?('pubDate')
             version = Time.parse(version.fetch('pubDate'))
 
             feed.items_newer_than(version).

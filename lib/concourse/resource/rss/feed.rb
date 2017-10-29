@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rss'
 require 'open-uri'
 require 'concourse/resource/rss/errors'
@@ -27,7 +28,7 @@ module Concourse
             item.title.chomp!
             item.link.chomp!
             # item.pubDate already was a parsed Time object
-            item.description.chomp! while "\n" == item.description[-1]
+            item.description.chomp! while item.description[-1] == "\n"
             item.guid = item.guid.content
           end
         end

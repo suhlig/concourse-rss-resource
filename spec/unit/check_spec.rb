@@ -1,7 +1,9 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'concourse/resource/rss/errors'
 
+# rubocop:disable Metrics/BlockLength
 describe Concourse::Resource::RSS::Check do
   let(:feed_body) { File.read(fixture('feed/postgres-versions.rss')) }
 

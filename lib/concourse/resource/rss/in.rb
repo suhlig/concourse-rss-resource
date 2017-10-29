@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'concourse/resource/rss/feed'
 require 'concourse/resource/rss/serializer'
 require 'concourse/resource/rss/errors'

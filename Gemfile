@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 group 'development' do
@@ -14,8 +15,8 @@ group 'development' do
   gem 'rspec-json_matcher'
 
   gem 'guard'
-  gem 'guard-rspec'
   gem 'guard-bundler'
+  gem 'guard-rspec'
 
   gem 'pry'
   gem 'pry-byebug'

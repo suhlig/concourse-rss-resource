@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Concourse
   module Resource
     module RSS
