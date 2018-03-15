@@ -10,8 +10,8 @@ module Concourse
       end
 
       class FeedUnavailable < StandardError
-        def initialize(e)
-          super(e)
+        def initialize(error)
+          super(error)
         end
       end
 

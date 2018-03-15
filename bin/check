@@ -5,14 +5,12 @@ $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
 require 'concourse/resource/rss/check'
 require 'json'
-
-# rubocop:disable Lint/RescueWithoutErrorClass
 begin
   input = JSON.parse(STDIN.read)
   script = Concourse::Resource::RSS::Check.new
   output = script.call(input['source'], input['version'])
   puts JSON.generate(output)
-rescue => e
+rescue StandardError => e
   warn "Error processing feed: #{e.message}"
   exit 1
 end

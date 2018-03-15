@@ -9,3 +9,4 @@
 /spec/reports/
 /tmp/
 Gemfile.lock
+.rake_t_cache

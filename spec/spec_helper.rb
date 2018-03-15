@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
 require 'concourse/resource/rss'
 
@@ -13,5 +13,5 @@ WebMock.disable_net_connect!
 RSpec.configuration.include RSpec::JsonMatcher
 
 def fixture(name)
-  File.join(File.dirname(__FILE__), 'fixtures', name)
+  File.read(File.join(File.dirname(__FILE__), 'fixtures', name))
 end

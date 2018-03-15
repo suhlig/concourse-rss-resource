@@ -7,11 +7,11 @@ module Concourse
         attr_reader :source_directory
 
         def initialize(source_directory)
-          raise ArgumentError.new('No source directory given') if source_directory.nil?
+          raise ArgumentError, 'No source directory given' if source_directory.nil?
           @source_directory = source_directory
         end
 
-        def call(source, source_directory, params=nil)
+        def call(_source, source_directory, _params = nil)
           raise 'Error: No source directory given' if source_directory.nil?
 
           # If this resource had output, we could do something with
@@ -21,7 +21,7 @@ module Concourse
           {
             'version'  => { 'pubDate' => nil },
             'metadata' => [
-              { 'name' => 'comment', 'value' => 'This resource has not output.' },
+              { 'name' => 'comment', 'value' => 'This resource has not output.' }
             ]
           }
         end

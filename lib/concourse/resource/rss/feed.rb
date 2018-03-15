@@ -11,20 +11,22 @@ module Concourse
         attr_reader :title, :items, :last_build_date
 
         def initialize(url)
+          # rubocop:disable Security/Open
           open(url) do |rss|
             feed = ::RSS::Parser.parse(rss)
-            raise FeedInvalid.new(url) unless feed
+            raise FeedInvalid, url unless feed
 
             @title = feed.channel.title.chomp
             @last_build_date = feed.channel.lastBuildDate
             @items = feed.items.map { |item| cleanup(item) }
           end
+          # rubocop:enable Security/Open
         rescue OpenURI::HTTPError => e
-          raise FeedUnavailable.new(e)
+          raise FeedUnavailable, e
         end
 
         def cleanup(item)
-          item.tap do |cleaned|
+          item.tap do |_cleaned|
             item.title.chomp!
             item.link.chomp!
             # item.pubDate already was a parsed Time object
@@ -34,11 +36,11 @@ module Concourse
         end
 
         def items_newer_than(version)
-          items.
-            select { |i| i.pubDate > version }.
-            unshift(items_at(version)).
-            compact.
-            flatten
+          items
+            .select { |i| i.pubDate > version }
+            .unshift(items_at(version))
+            .compact
+            .flatten
         end
 
         def items_at(version)

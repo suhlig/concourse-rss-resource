@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-
-# rubocop:disable Metrics/BlockLength
 describe Concourse::Resource::RSS::Feed do
   subject { Concourse::Resource::RSS::Feed.new(url) }
   let(:url) { 'https://www.postgresql.org/versions.rss' }
-  let(:feed_body) { File.read(fixture('feed/postgres-versions.rss')) }
+  let(:feed_body) { fixture('feed/postgres-versions.rss') }
 
   before do
     stub_request(:get, url).to_return(
@@ -59,7 +57,7 @@ describe Concourse::Resource::RSS::Feed do
     let(:feed_body) { '' }
 
     it 'complains if the content is empty' do
-      expect { subject } .to raise_error /parse contents/
+      expect { subject } .to raise_error(/parse contents/)
     end
   end
 
@@ -71,7 +69,7 @@ describe Concourse::Resource::RSS::Feed do
     end
 
     it 'returns an empty response' do
-      expect { subject.items }.to raise_error /404/
+      expect { subject.items }.to raise_error(/404/)
     end
   end
 end

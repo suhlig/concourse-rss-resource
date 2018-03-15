@@ -2,10 +2,8 @@
 
 require 'spec_helper'
 require 'concourse/resource/rss/errors'
-
-# rubocop:disable Metrics/BlockLength
 describe Concourse::Resource::RSS::Check do
-  let(:feed_body) { File.read(fixture('feed/postgres-versions.rss')) }
+  let(:feed_body) { fixture('feed/postgres-versions.rss') }
 
   before do
     stub_request(:get, 'https://www.postgresql.org/versions.rss').to_return(
@@ -63,10 +61,10 @@ describe Concourse::Resource::RSS::Check do
         # only the latest.
         #
         expect(output).to eq([
-          { 'pubDate' => Time.parse('2014-07-24 00:00 +0000') },  # 8.4.22
-          { 'pubDate' => Time.parse('2015-10-08 00:00 +0000') },  # 9.0.23
-          { 'pubDate' => Time.parse('2016-10-27 00:00 +0000') },  # 9.6.1
-        ])
+                               { 'pubDate' => Time.parse('2014-07-24 00:00 +0000') }, # 8.4.22
+                               { 'pubDate' => Time.parse('2015-10-08 00:00 +0000') },  # 9.0.23
+                               { 'pubDate' => Time.parse('2016-10-27 00:00 +0000') },  # 9.6.1
+                             ])
       end
     end
   end
@@ -89,8 +87,8 @@ describe Concourse::Resource::RSS::Check do
 
       it 'raises an error' do
         expect { subject.call(source, version) }.to raise_error do |error|
-          expect(error).to be_instance_of(Concourse::Resource::RSS::FeedInvalid).
-            or be_instance_of Concourse::Resource::RSS::FeedUnavailable
+          expect(error).to be_instance_of(Concourse::Resource::RSS::FeedInvalid)
+            .or be_instance_of Concourse::Resource::RSS::FeedUnavailable
         end
       end
     end
@@ -98,8 +96,8 @@ describe Concourse::Resource::RSS::Check do
 
   context 'the feed is not valid' do
     before do
-      allow(Concourse::Resource::RSS::Feed).to receive(:new).
-        and_raise Concourse::Resource::RSS::FeedInvalid.new('example.com')
+      allow(Concourse::Resource::RSS::Feed).to receive(:new)
+        .and_raise Concourse::Resource::RSS::FeedInvalid.new('example.com')
     end
 
     include_examples 'feed is unavailable'
@@ -107,15 +105,15 @@ describe Concourse::Resource::RSS::Check do
 
   context 'the feed is not available' do
     before do
-      allow(Concourse::Resource::RSS::Feed).to receive(:new).
-        and_raise Concourse::Resource::RSS::FeedUnavailable.new(StandardError.new('not there'))
+      allow(Concourse::Resource::RSS::Feed).to receive(:new)
+        .and_raise Concourse::Resource::RSS::FeedUnavailable.new(StandardError.new('not there'))
     end
 
     include_examples 'feed is unavailable'
   end
 
   context 'the channel has no items' do
-    let(:feed_body) { File.read(fixture('feed/empty.rss')) }
+    let(:feed_body) { fixture('feed/empty.rss') }
     let(:source) { { 'url' => 'https://www.postgresql.org/versions.rss' } }
     let(:version) { nil }
 

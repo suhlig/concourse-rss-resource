@@ -9,11 +9,11 @@ module Concourse
     module RSS
       class In
         def initialize(destination_directory)
-          raise ArgumentError.new('No destination directory given') if destination_directory.nil?
+          raise ArgumentError, 'No destination directory given' if destination_directory.nil?
           @serializer = Serializer.new(destination_directory)
         end
 
-        def call(source, version, params=nil)
+        def call(source, version, _params = nil)
           version = Time.parse(version.fetch('pubDate'))
           url = source.fetch('url')
 
@@ -22,12 +22,17 @@ module Concourse
           raise VersionUnavailable.new(version, source) if item.nil?
 
           @serializer.serialize(item)
+          to_json(item)
+        end
 
+        private
+
+        def to_json(item)
           {
             'version'  => { 'pubDate' => item.pubDate },
             'metadata' => [
               { 'name' => 'title', 'value' => item.title },
-              { 'name' => 'description', 'value' => item.description },
+              { 'name' => 'description', 'value' => item.description }
             ]
           }
         end

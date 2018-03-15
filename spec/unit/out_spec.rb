@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-
-# rubocop:disable Metrics/BlockLength
 describe Concourse::Resource::RSS::Out do
   subject { Concourse::Resource::RSS::Out.new(source_directory) }
   let(:source_directory) { Dir.mktmpdir }
@@ -29,16 +27,16 @@ describe Concourse::Resource::RSS::Out do
 
     expect(output).to_not be_empty
     expect(output).to include('metadata')
-    expect(output['metadata']).to include({ 'name' => 'comment', 'value' => 'This resource has not output.' })
+    expect(output['metadata']).to include('name' => 'comment', 'value' => 'This resource has not output.')
   end
 
   context 'without source directory' do
     let(:source_directory) { nil }
 
     it 'raises an error' do
-      expect {
+      expect do
         subject.call(source, source_directory, params)
-      }.to raise_error(/source directory/)
+      end.to raise_error(/source directory/)
     end
   end
 end

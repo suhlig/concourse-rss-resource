@@ -2,8 +2,6 @@
 
 require 'spec_helper'
 require 'concourse/resource/rss/errors'
-
-# rubocop:disable Metrics/BlockLength
 describe Concourse::Resource::RSS::In do
   subject { Concourse::Resource::RSS::In.new(destination_directory) }
   let(:destination_directory) { Dir.mktmpdir }
@@ -12,7 +10,7 @@ describe Concourse::Resource::RSS::In do
   before do
     stub_request(:get, 'https://www.postgresql.org/versions.rss').to_return(
       status: 200,
-      body: File.read(fixture('feed/postgres-versions.rss'))
+      body: fixture('feed/postgres-versions.rss')
     )
   end
 
@@ -27,20 +25,20 @@ describe Concourse::Resource::RSS::In do
     it 'responds with the fetched version' do
       output = subject.call(source, version)
 
-      expect(output).to include({
-        'version' => { 'pubDate' => Time.parse(desired_pub_date) },
-        })
+      expect(output).to include(
+        'version' => { 'pubDate' => Time.parse(desired_pub_date) }
+      )
     end
 
     it 'responds with metadata of the fetched version' do
       output = subject.call(source, version)
 
-      expect(output).to include({
+      expect(output).to include(
         'metadata' => [
           { 'name' => 'title', 'value' => '9.6.1' },
-          { 'name' => 'description', 'value' => '9.6.1 is the latest release in the 9.6 series.' },
+          { 'name' => 'description', 'value' => '9.6.1 is the latest release in the 9.6 series.' }
         ]
-        })
+      )
     end
 
     it "places the resource's title in the destination directory" do
@@ -94,9 +92,9 @@ describe Concourse::Resource::RSS::In do
     let(:destination_directory) { nil }
 
     it 'raises an error' do
-      expect {
+      expect do
         subject.call(source, version)
-      }.to raise_error(/destination directory/)
+      end.to raise_error(/destination directory/)
     end
   end
 
@@ -104,9 +102,9 @@ describe Concourse::Resource::RSS::In do
     let(:desired_pub_date) { 'Thu, 27 Oct 2046 00:00:00 +0000' }
 
     it 'raises an error' do
-      expect {
+      expect do
         subject.call(source, version)
-      }.to raise_error(Concourse::Resource::RSS::VersionUnavailable)
+      end.to raise_error(Concourse::Resource::RSS::VersionUnavailable)
     end
   end
 end

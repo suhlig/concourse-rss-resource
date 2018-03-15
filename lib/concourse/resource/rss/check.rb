@@ -14,20 +14,29 @@ module Concourse
     module RSS
       class Check
         def call(source, version)
-          url = source.fetch('url')
-          feed = Feed.new(url)
+          @feed = Feed.new(source.fetch('url'))
 
           if version&.key?('pubDate')
-            version = Time.parse(version.fetch('pubDate'))
-
-            feed.items_newer_than(version).
-              sort_by(&:pubDate).
-              map { |i| { 'pubDate' => i.pubDate } }.
-              uniq
+            at(version)
           else
-            return [] if feed.items.empty?
-            [{ 'pubDate' => feed.items.first.pubDate }]
+            first
           end
+        end
+
+        private
+
+        def at(version)
+          version = Time.parse(version.fetch('pubDate'))
+
+          @feed.items_newer_than(version)
+               .sort_by(&:pubDate)
+               .map { |i| { 'pubDate' => i.pubDate } }
+               .uniq
+        end
+
+        def first
+          return [] if @feed.items.empty?
+          [{ 'pubDate' => @feed.items.first.pubDate }]
         end
       end
     end
