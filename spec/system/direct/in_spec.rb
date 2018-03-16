@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'system/shared/in_examples'
 
 describe 'when `in` is executed directly', type: 'aruba' do

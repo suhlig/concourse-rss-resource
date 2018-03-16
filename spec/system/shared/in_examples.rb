@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 shared_examples 'in' do
   it 'fetches the resource and responds with the fetched version and its metadata' do
     pipe_in_file('../../spec/fixtures/in/input.json') && close_input

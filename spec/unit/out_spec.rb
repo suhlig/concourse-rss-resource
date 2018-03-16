@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 describe Concourse::Resource::RSS::Out do
   subject { Concourse::Resource::RSS::Out.new(source_directory) }
   let(:source_directory) { Dir.mktmpdir }

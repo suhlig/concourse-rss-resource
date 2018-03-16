@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 shared_examples 'check' do
   context 'the feed cannot be found' do
     before do

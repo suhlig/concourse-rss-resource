@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'system/shared/out_examples'
 
 describe 'when `out` is executed directly', type: 'aruba' do

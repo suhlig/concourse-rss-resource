@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'concourse/resource/rss/errors'
+
 describe Concourse::Resource::RSS::In do
   subject { Concourse::Resource::RSS::In.new(destination_directory) }
   let(:destination_directory) { Dir.mktmpdir }

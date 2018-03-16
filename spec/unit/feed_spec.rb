@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 describe Concourse::Resource::RSS::Feed do
   subject { Concourse::Resource::RSS::Feed.new(url) }
   let(:url) { 'https://www.postgresql.org/versions.rss' }

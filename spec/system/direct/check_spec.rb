@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'system/shared/check_examples'
 
 describe 'when `check` is executed directly', type: 'aruba' do
