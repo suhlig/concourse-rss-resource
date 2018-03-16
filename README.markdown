@@ -49,7 +49,7 @@ You can then read these files in a task and, for example, construct a [Slack not
 
 ## `out`: Not implemented
 
-There is output from this resource.
+There is no output from this resource.
 
 # Development
 
