@@ -84,7 +84,7 @@ GEM
     pry-byebug (3.6.0)
       byebug (~> 10.0)
       pry (~> 0.10)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     rainbow (3.0.0)
     rake (12.3.2)
     rb-fsevent (0.10.3)
@@ -123,7 +123,7 @@ GEM
     shellany (0.0.1)
     thor (0.20.3)
     unicode-display_width (1.4.0)
-    webmock (3.4.2)
+    webmock (3.5.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
