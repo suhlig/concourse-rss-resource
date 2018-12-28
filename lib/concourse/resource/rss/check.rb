@@ -3,7 +3,7 @@
 require 'concourse/resource/rss/feed'
 
 #
-# Not sure what to do with this scenario from http://concourse.ci/implementing-resources.html#resource-check:
+# Not sure what to do with this scenario from http://concourse-ci.org/implementing-resources.html#resource-check:
 #
 #   If your resource is unable to determine which versions are newer then the
 #   given version (e.g. if it's a git commit that was push -fed over), then

@@ -3,6 +3,7 @@
 module Concourse
   module Resource
     module RSS
+      # https://concourse-ci.org/implementing-resources.html#out
       class Out
         attr_reader :source_directory
 

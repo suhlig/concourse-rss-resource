@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/suhlig/concourse-rss-resource.svg?branch=master)](https://travis-ci.org/suhlig/concourse-rss-resource)
 
-[Concourse](https://concourse.ci/ "Concourse Homepage") [resource](https://concourse.ci/implementing-resources.html "Implementing a Resource") for RSS feeds. See the [example](example/README.markdown) folder for a pipeline that sends a Slack notification when a new Postgres release is available.
+[Concourse](https://concourse-ci.org/ "Concourse Homepage") [resource](https://concourse-ci.org/implementing-resources.html "Implementing a Resource") for RSS feeds. See the [example](example/README.markdown) folder for a pipeline that sends a Slack notification when a new Postgres release is available.
 
 # Resource Type Configuration
 
