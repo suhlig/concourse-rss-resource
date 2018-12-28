@@ -8,6 +8,7 @@ module Concourse
 
         def initialize(source_directory)
           raise ArgumentError, 'No source directory given' if source_directory.nil?
+
           @source_directory = source_directory
         end
 
@@ -19,7 +20,7 @@ module Concourse
           # using params
 
           {
-            'version'  => { 'pubDate' => nil },
+            'version' => { 'pubDate' => nil },
             'metadata' => [
               { 'name' => 'comment', 'value' => 'This resource has not output.' }
             ]

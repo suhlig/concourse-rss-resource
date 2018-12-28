@@ -7,9 +7,11 @@ require 'concourse/resource/rss/errors'
 module Concourse
   module Resource
     module RSS
+      # https://concourse-ci.org/implementing-resources.html#in
       class In
         def initialize(destination_directory)
           raise ArgumentError, 'No destination directory given' if destination_directory.nil?
+
           @serializer = Serializer.new(destination_directory)
         end
 
@@ -29,7 +31,7 @@ module Concourse
 
         def to_json(item)
           {
-            'version'  => { 'pubDate' => item.pubDate },
+            'version' => { 'pubDate' => item.pubDate },
             'metadata' => [
               { 'name' => 'title', 'value' => item.title },
               { 'name' => 'description', 'value' => item.description }

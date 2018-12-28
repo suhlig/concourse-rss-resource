@@ -36,6 +36,7 @@ module Concourse
 
         def first
           return [] if @feed.items.empty?
+
           [{ 'pubDate' => @feed.items.first.pubDate }]
         end
       end
