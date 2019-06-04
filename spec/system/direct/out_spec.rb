@@ -8,7 +8,7 @@ describe 'when `out` is executed directly', type: 'aruba' do
 
   before do
     create_directory(source_directory)
-    run "bin/out #{source_directory}"
+    run_command "bin/out #{source_directory}"
   end
 
   include_examples 'out'

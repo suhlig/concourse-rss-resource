@@ -1,15 +1,10 @@
-FROM alpine
+FROM ruby:alpine
 
-RUN apk add             \
-      --no-cache        \
-      ca-certificates   \
-      ruby              \
-      ruby-bundler      \
-      ruby-io-console   \
-      ruby-irb          \
-      ruby-rake         \
-      ruby-bigdecimal   \
-      ruby-json
+RUN bundle config --global frozen 1
+WORKDIR /resource
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --jobs 4 --without development test
 
-ADD lib /opt/lib
-ADD bin /opt/resource
+COPY . .
+
+RUN ln -s /resource/bin /opt/resource

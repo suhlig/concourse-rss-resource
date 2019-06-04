@@ -14,12 +14,12 @@ describe 'when `out` is executed in a docker container', type: 'aruba' do
     # We don't necessarily have access to the docker host's file system from
     # this test, so we create the resource contents by mounting another container
     # with the same volume as the one that created the file.
-    run "docker run --rm \
+    run_command "docker run --rm \
       --volume #{host_source_directory}:#{container_source_directory} \
       suhlig/concourse-rss-resource \
       'echo #{resource_contents} > #{container_source_file}'"
 
-    run "docker run --rm --interactive \
+    run_command "docker run --rm --interactive \
          --volume #{host_source_directory}:#{container_source_directory} \
          suhlig/concourse-rss-resource \
          /opt/resource/out #{container_source_directory}"

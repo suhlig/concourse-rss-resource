@@ -10,7 +10,7 @@ describe 'when `in` is executed in a docker container', type: 'aruba' do
   before do
     `docker build -t suhlig/concourse-rss-resource:latest .`
 
-    run "docker run --rm --interactive \
+    run_command "docker run --rm --interactive \
          --volume #{host_destination_directory}:#{container_destination_directory} \
          suhlig/concourse-rss-resource \
          /opt/resource/in #{container_destination_directory}"
