@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rss'
-require 'open-uri'
+require 'faraday'
 require 'concourse/resource/rss/errors'
 
 module Concourse
@@ -11,28 +11,13 @@ module Concourse
         attr_reader :title, :items, :last_build_date
 
         def initialize(url)
-          # rubocop:disable Security/Open
-          open(url) do |rss|
-            feed = ::RSS::Parser.parse(rss)
-            raise FeedInvalid, url unless feed
+          response = Faraday.get(url)
+          raise FeedUnavailable, "Could not fetch URL #{url}; status is #{response.status}" if response.status != 200
 
-            @title = feed.channel.title.chomp
-            @last_build_date = feed.channel.lastBuildDate
-            @items = feed.items.map { |item| cleanup(item) }
-          end
-          # rubocop:enable Security/Open
-        rescue OpenURI::HTTPError => e
-          raise FeedUnavailable, e
-        end
+          feed = ::RSS::Parser.parse(response.body)
+          raise FeedInvalid, url unless feed
 
-        def cleanup(item)
-          item.tap do |_cleaned|
-            item.title.chomp!
-            item.link.chomp!
-            # item.pubDate already was a parsed Time object
-            item.description.chomp! while item.description[-1] == "\n"
-            item.guid = item.guid.content
-          end
+          handle(response.headers['content-type'], feed)
         end
 
         def items_newer_than(version)

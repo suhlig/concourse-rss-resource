@@ -12,7 +12,7 @@ shared_examples 'check' do
 
     it 'prints an error message' do
       stop_all_commands # required to read stderr
-      expect(last_command_started.stderr).to include('Not Found')
+      expect(last_command_started.stderr).to include('404')
       expect(last_command_started.stdout).to be_empty
     end
   end
