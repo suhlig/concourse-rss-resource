@@ -8,6 +8,7 @@ describe Concourse::Resource::RSS::Check do
   before do
     stub_request(:get, 'https://www.postgresql.org/versions.rss').to_return(
       status: 200,
+      headers: { 'Content-Type' => 'application/rss+xml' },
       body: feed_body
     )
   end
@@ -62,8 +63,8 @@ describe Concourse::Resource::RSS::Check do
         #
         expect(output).to eq([
                                { 'pubDate' => Time.parse('2014-07-24 00:00 +0000') }, # 8.4.22
-                               { 'pubDate' => Time.parse('2015-10-08 00:00 +0000') },  # 9.0.23
-                               { 'pubDate' => Time.parse('2016-10-27 00:00 +0000') },  # 9.6.1
+                               { 'pubDate' => Time.parse('2015-10-08 00:00 +0000') }, # 9.0.23
+                               { 'pubDate' => Time.parse('2016-10-27 00:00 +0000') } # 9.6.1
                              ])
       end
     end
@@ -120,6 +121,25 @@ describe Concourse::Resource::RSS::Check do
     it 'responds with an empty list' do
       output = subject.call(source, version)
       expect(output).to be_empty
+    end
+  end
+
+  context 'an Atom feed' do
+    before do
+      stub_request(:get, 'https://github.com/hashicorp/vagrant/releases.atom').to_return(
+        status: 200,
+        headers: { 'Content-Type' => 'application/atom+xml' },
+        body: feed_body
+      )
+    end
+
+    let(:feed_body) { fixture('feed/releases.atom') }
+    let(:source) { { 'url' => 'https://github.com/hashicorp/vagrant/releases.atom' } }
+    let(:version) { nil }
+
+    it 'responds with an non-empty list' do
+      output = subject.call(source, version)
+      expect(output).to_not be_empty
     end
   end
 end

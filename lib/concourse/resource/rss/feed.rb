@@ -31,6 +31,41 @@ module Concourse
         def items_at(version)
           items.select { |i| i.pubDate == version }
         end
+
+        private
+
+        def handle(content_type, feed)
+          case content_type
+          when 'application/rss+xml', 'application/rss+xml; charset=utf-8', nil, ''
+            handle_as_rss(feed)
+          when 'application/atom+xml'
+            handle_as_atom(feed)
+          else
+            raise "No handler defined for #{content_type}"
+          end
+        end
+
+        def handle_as_rss(feed)
+          @title = feed.channel.title.chomp
+          @last_build_date = feed.channel.lastBuildDate
+          @items = feed.items.map { |item| cleanup(item) }
+        end
+
+        def handle_as_atom(feed)
+          @title = feed.title.content
+          @last_build_date = feed.updated.content
+          @items = feed.items # .map { |item| cleanup(item) }
+        end
+
+        def cleanup(item)
+          item.tap do |_cleaned|
+            item.title.chomp!
+            item.link.chomp!
+            # item.pubDate already was a parsed Time object
+            item.description.chomp! while item.description[-1] == "\n"
+            item.guid = item.guid.content
+          end
+        end
       end
     end
   end
