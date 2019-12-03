@@ -35,6 +35,10 @@ module Concourse
         private
 
         def handle(content_type, feed)
+          # some feeds return Charset as uppercase,
+          # which will lead to the content type not being recognized
+          # this fixes this by ensuring that the check is performed on downcased content_type
+          content_type = content_type.to_s.downcase
           case content_type
           when 'application/rss+xml', 'application/rss+xml; charset=utf-8', nil, ''
             handle_as_rss(feed)
