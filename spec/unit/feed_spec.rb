@@ -21,6 +21,10 @@ describe Concourse::Resource::RSS::Feed do
       expect(subject.last_build_date).to eq(Time.parse('Thu, 27 Oct 2016 00:00:00 +0000'))
     end
 
+    it 'has the latest entry date' do
+      expect(subject.latest_entry_date).to eq(Time.parse('Thu, 27 Oct 2016 00:00:00 +0000'))
+    end
+
     it 'has a number of items' do
       expect(subject.items).to_not be_empty
       expect(subject.items).to have(20).items
