@@ -1,17 +1,12 @@
 sudo: required
-
 language: ruby
-
 rvm:
-  - 2.5.0
-
+  - 2.7.0
 services:
   - docker
-
 script:
   - bundle exec rake rubocop
   - bundle exec rake
-
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";

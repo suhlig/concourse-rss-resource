@@ -1,9 +1,33 @@
+AllCops:
+  TargetRubyVersion: 2.7
+  Include:
+    - '**/Gemfile'
+    - '**/Guardfile'
+    - '**/*.gemspec'
+    - '**/Rakefile'
+    - 'exe/*'
+  Exclude:
+    - vendor/**/*
+    - db/migrations/**/*
+
+  DisplayCopNames:
+    Enabled: true
+
+  DisplayStyleGuide:
+    Enabled: true
+
 Style/Documentation:
   Enabled: false
-
-Metrics/LineLength:
-  Max: 180
 
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
+
+Metrics/LineLength:
+  Max: 180
+
+Metrics/MethodLength:
+  Max: 60
+
+Style/MixinUsage:
+  Enabled: false
