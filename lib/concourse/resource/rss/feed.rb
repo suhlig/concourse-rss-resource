@@ -59,11 +59,20 @@ module Concourse
 
         def cleanup(item)
           item.tap do |_cleaned|
-            item.title.chomp!
-            item.link.chomp!
+            begin
+              item.title.chomp!
+            rescue NoMethodError
+              raise "title and description missing for item" if item.description.nil?
+            end
+            item.link.chomp! unless item.link.nil?
             # item.pubDate already was a parsed Time object
-            item.description.chomp! while item.description[-1] == "\n"
-            item.guid = item.guid.content
+            raise "item is missing pubDate, so cannot be used" if item.pubDate.nil?
+            begin
+              item.description.chomp! while item.description[-1] == "\n"
+            rescue NoMethodError
+              raise "title and description missing for item" if item.title.nil?
+            end
+            item.guid = item.guid.nil? ? nil: item.guid.content
           end
         end
       end

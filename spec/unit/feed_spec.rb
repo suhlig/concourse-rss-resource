@@ -52,6 +52,105 @@ describe Concourse::Resource::RSS::Feed do
     end
   end
 
+  context 'with a valid feed with no item descriptions' do
+    let(:url) { 'https://docker-hub-rss.now.sh/_/alpine.atom' }
+    let(:feed_body) { fixture('feed/alpine.atom') }
+    before do
+      stub_request(:get, url).to_return(
+        body: feed_body,
+      )
+    end
+
+    it 'has a first item with title' do
+      first = subject.items.first
+      expect(first.title).to eq('library/alpine:3.11.3')
+    end
+
+    it 'has a first item with an empty description' do
+      first = subject.items.first
+      expect(first.description).to be_nil
+    end
+
+    it 'has a number of items' do
+      expect(subject.items).to_not be_empty
+      expect(subject.items).to have(3).items
+    end
+  end
+
+  context 'with a valid feed with no item titles' do
+    let(:url) { 'https://docker-hub-rss.now.sh/_/alpine.atom' }
+    let(:feed_body) { fixture('feed/alpine.atom.no-item-titles') }
+    before do
+      stub_request(:get, url).to_return(
+        body: feed_body,
+      )
+    end
+
+    it 'has a first item with an empty title' do
+      first = subject.items.first
+      expect(first.title).to be_nil
+    end
+    
+    it 'has a first item with description' do
+      first = subject.items.first
+      expect(first.description).to eq('library/alpine:3.11.3')
+    end
+
+    it 'has a number of items' do
+      expect(subject.items).to_not be_empty
+      expect(subject.items).to have(3).items
+    end
+  end
+
+  context 'with a valid feed with missing elements' do
+    let(:url) { 'https://docker-hub-rss.now.sh/_/alpine.atom' }
+    let(:feed_body) { fixture('feed/alpine.atom.missing-elements') }
+    before do
+      stub_request(:get, url).to_return(
+        body: feed_body,
+      )
+    end
+  
+    it 'has a first item with title' do
+      first = subject.items.first
+      expect(first.title).to eq('library/alpine:3.11.3')
+    end
+
+    it 'has a first item an empty link' do
+      first = subject.items.first
+      expect(first.link).to be_nil
+    end
+    
+    it 'has a first item with an empty description' do
+      first = subject.items.first
+      expect(first.description).to be_nil
+    end
+
+    it 'has a first item with an empty guid' do
+      first = subject.items.first
+      expect(first.guid).to be_nil
+    end
+
+    it 'has a number of items' do
+      expect(subject.items).to_not be_empty
+      expect(subject.items).to have(3).items
+    end
+  end
+
+  context 'with a valid feed with missing dates' do
+    let(:url) { 'https://docker-hub-rss.now.sh/_/alpine.atom' }
+    let(:feed_body) { fixture('feed/alpine.atom.missing-dates') }
+    before do
+      stub_request(:get, url).to_return(
+        body: feed_body,
+      )
+    end
+  
+    it 'complains if the date is empty' do
+      expect { subject } .to raise_error(RuntimeError)
+    end
+  end
+
   context 'with an empty feed' do
     let(:feed_body) { '' }
 
