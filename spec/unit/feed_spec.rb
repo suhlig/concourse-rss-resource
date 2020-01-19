@@ -4,14 +4,16 @@ describe Concourse::Resource::RSS::Feed do
   subject { Concourse::Resource::RSS::Feed.new(url) }
   let(:url) { 'https://www.postgresql.org/versions.rss' }
   let(:feed_body) { fixture('feed/postgres-versions.rss') }
+  let(:content_type) { 'application/rss+xml' }
 
   before do
     stub_request(:get, url).to_return(
       status: 200,
-      body: feed_body
+      body: feed_body,
+      headers: {'Content-Type' => content_type}
     )
   end
-
+Concourse::Resource::RSS::Feed
   context 'with a valid feed' do
     it 'has the title' do
       expect(subject.title).to eq('PostgreSQL latest versions')
@@ -69,6 +71,47 @@ describe Concourse::Resource::RSS::Feed do
 
     it 'returns an empty response' do
       expect { subject.items }.to raise_error(/404/)
+    end
+  end
+  context 'with a feed without one of the allowed" Content-Type headers' do
+    context 'with a valid rss feed body' do
+      let(:url) { 'https://www.postgresql.org/versions.rss' }
+      let(:feed_body) { fixture('feed/postgres-versions.rss') }
+      before do
+        stub_request(:get, url).to_return(
+          body: feed_body,
+          headers: {'Content-Type' => "text/xml"}
+        )
+      end
+      it 'has the title' do
+        expect(subject.title).to eq('PostgreSQL latest versions')
+      end
+    end
+    context 'with a valid atom feed body' do
+      let(:url) { 'https://github.com/hashicorp/vagrant/releases.atom' }
+      let(:feed_body) { fixture('feed/releases.atom') }
+      before do
+        stub_request(:get, url).to_return(
+          body: feed_body,
+          headers: {'Content-Type' => "text/xml"}
+        )
+      end
+      it 'has the title' do
+        expect(subject.title).to eq('Release notes from vagrant')
+      end
+    end
+    context 'with a non-feed, valid XML body' do
+      let(:url) { 'https://example.com/not/a/feed.xml' }
+      let(:feed_body) { fixture('feed/dummy.xml') }
+      before do
+        stub_request(:get, url).to_return(
+          body: feed_body,
+          headers: {'Content-Type' => "text/xml"}
+        )
+      end
+      it 'continues to fail RSS parsing' do
+        expect { subject } .to raise_error(/prefix <> doesn't associate uri/)
+      end
     end
   end
 end
