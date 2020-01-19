@@ -18,7 +18,11 @@ describe Concourse::Resource::RSS::Feed do
     end
 
     it 'has the last build date' do
-      expect(subject.last_build_date).to eq(Time.parse('Thu, 27 Oct 2016 00:00:00 +0000'))
+      expect(subject.last_build_date).to eq(Time.parse('Thu, 28 Oct 2016 00:00:00 +0000'))
+    end
+
+    it 'has the last item date' do
+      expect(subject.last_item_date).to eq(Time.parse('Thu, 27 Oct 2016 00:00:00 +0000'))
     end
 
     it 'has a number of items' do

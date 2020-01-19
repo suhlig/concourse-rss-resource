@@ -8,7 +8,7 @@ module Concourse
   module Resource
     module RSS
       class Feed
-        attr_reader :title, :items, :last_build_date
+        attr_reader :title, :items, :last_build_date, :last_item_date
 
         def initialize(url)
           response = Faraday.get(url)
@@ -49,12 +49,14 @@ module Concourse
           @title = feed.channel.title.chomp
           @last_build_date = feed.channel.lastBuildDate
           @items = feed.items.map { |item| cleanup(item) }
+          @last_item_date = @items.first.nil? ? nil : @items.first.pubDate
         end
 
         def handle_as_atom(feed)
           @title = feed.title.content
           @last_build_date = feed.updated.content
           @items = feed.items # .map { |item| cleanup(item) }
+          @last_item_date = @items.first.nil? ? nil : @items.first.updated.content
         end
 
         def cleanup(item)
