@@ -41,7 +41,17 @@ module Concourse
           when 'application/atom+xml'
             handle_as_atom(feed)
           else
-            raise "No handler defined for #{content_type}"
+            detect_type(feed, content_type)
+          end
+        end
+
+        def detect_type(feed, content_type)
+          if feed.respond_to?(:channel)
+            handle_as_rss(feed)
+          elsif feed.respond_to?(:title)
+            handle_as_atom(feed)
+          else
+            raise "No handler defined for #{content_type}, and no valid feed content detected"
           end
         end
 
