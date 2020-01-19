@@ -36,8 +36,7 @@ module Concourse
 
         def first
           return [] if @feed.items.empty?
-
-          [{ 'pubDate' => @feed.last_build_date }]
+          [{ 'pubDate' => @feed.last_item_date }]
         end
       end
     end

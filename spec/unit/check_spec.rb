@@ -137,7 +137,7 @@ describe Concourse::Resource::RSS::Check do
     let(:source) { { 'url' => 'https://github.com/hashicorp/vagrant/releases.atom' } }
     let(:version) { nil }
 
-    it 'responds with an non-empty list' do
+    it 'responds with a non-empty list' do
       output = subject.call(source, version)
       expect(output).to_not be_empty
     end

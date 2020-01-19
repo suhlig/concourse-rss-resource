@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>PostgreSQL latest versions</title><link>https://www.postgresql.org/</link><description>PostgreSQL latest versions</description><atom:link href="https://www.postgresql.org/versions.rss" rel="self"></atom:link><language>en-us</language><lastBuildDate>Thu, 27 Oct 2016 00:00:00 +0000</lastBuildDate>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>PostgreSQL latest versions</title><link>https://www.postgresql.org/</link><description>PostgreSQL latest versions</description><atom:link href="https://www.postgresql.org/versions.rss" rel="self"></atom:link><language>en-us</language><lastBuildDate>Thu, 28 Oct 2016 00:00:00 +0000</lastBuildDate>
 <item><title>9.6.1
 </title><link>https://www.postgresql.org/docs/9.6/static/release-9-6-1.html</link><description>9.6.1 is the latest release in the 9.6 series.
 
