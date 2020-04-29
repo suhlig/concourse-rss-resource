@@ -4,7 +4,7 @@ require 'system/shared/check_examples'
 
 describe 'when `check` is executed directly', type: 'aruba' do
   before do
-    run_command 'bin/check'
+    run_command 'check'
   end
 
   include_examples 'check'

@@ -7,7 +7,7 @@ describe 'when `in` is executed directly', type: 'aruba' do
 
   before do
     create_directory(destination_directory)
-    run_command "bin/in #{destination_directory}"
+    run_command "in #{destination_directory}"
   end
 
   include_examples 'in'
