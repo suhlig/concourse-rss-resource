@@ -7,7 +7,7 @@ $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'concourse/resource/rss/out'
 require 'json'
 
-input = JSON.parse(STDIN.read)
+input = JSON.parse($stdin.read)
 script = Concourse::Resource::RSS::Out.new(ARGV.first)
 output = script.call(input['source'], input['params'])
 puts JSON.generate(output)

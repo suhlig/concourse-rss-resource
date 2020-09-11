@@ -8,7 +8,7 @@ require 'concourse/resource/rss/check'
 require 'json'
 
 begin
-  input = JSON.parse(STDIN.read)
+  input = JSON.parse($stdin.read)
   script = Concourse::Resource::RSS::Check.new
   output = script.call(input['source'], input['version'])
   puts JSON.generate(output)
