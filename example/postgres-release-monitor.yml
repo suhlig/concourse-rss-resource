@@ -1,0 +1,32 @@
+resource_types:
+  - name: rss
+    type: registry-image
+    source:
+      repository: suhlig/concourse-rss-resource
+      tag: latest
+
+resources:
+  - name: postgres-releases
+    type: rss
+    source:
+      url: https://www.postgresql.org/versions.rss
+
+jobs:
+  - name: monitor-postgres-releases
+    plan:
+    - get: postgres-releases
+      trigger: true
+    - task: alert
+      config:
+        platform: linux
+        image_resource:
+          type: registry-image
+          source: {repository: alpine}
+        inputs:
+          - name: postgres-releases
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            echo "There is a new Postgres release: $(cat postgres-releases/title)"
