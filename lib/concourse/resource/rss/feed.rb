@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rss'
 require 'faraday'
 require 'concourse/resource/rss/errors'
+require 'rss'
 
 module Concourse
   module Resource

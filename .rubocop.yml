@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.0
   Include:
     - '**/Gemfile'
     - '**/Guardfile'
@@ -17,6 +17,7 @@ AllCops:
     Enabled: true
 
   NewCops: enable
+  SuggestExtensions: false
 
 Style/Documentation:
   Enabled: false

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'concourse/resource/rss/in'
 require 'concourse/resource/rss/errors'
 
 describe Concourse::Resource::RSS::In do

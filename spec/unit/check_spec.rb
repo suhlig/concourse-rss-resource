@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'concourse/resource/rss/errors'
+require 'concourse/resource/rss/check'
 
 describe Concourse::Resource::RSS::Check do
   let(:feed_body) { fixture('feed/postgres-versions.rss') }
