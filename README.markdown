@@ -9,7 +9,7 @@
 ```yaml
 resource_types:
   - name: rss-resource
-    type: docker-image
+    type: registry-image
     source:
       repository: suhlig/concourse-rss-resource
       tag: latest
@@ -17,7 +17,7 @@ resource_types:
 
 # Source Configuration
 
-* `url`: *Required.* The URL of the feed. Anything that can be parsed by Ruby's [RSS::Parser](http://ruby-doc.org/stdlib-2.3.1/libdoc/rss/rdoc/RSS/Parser.html) should be good.
+* `url`: *Required.* The URL of the feed. Anything that can be parsed by Ruby's [RSS](https://www.rubydoc.info/gems/rss) gem should be good.
 
 # Behavior
 
