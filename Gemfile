@@ -6,7 +6,6 @@ gem 'faraday'
 gem 'rss'
 
 group 'development' do
-  gem 'bundler'
   gem 'rake'
   gem 'rubocop'
 
