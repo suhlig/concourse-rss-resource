@@ -1,0 +1,65 @@
+jobs:
+  - name: test-it
+    plan:
+      - in_parallel:
+        - get: source
+          trigger: true
+        - get: image-version
+          params: { bump: patch }
+      - task: run-tests
+        file: source/ci/tasks/run-tests.yml
+      - in_parallel:
+        - put: image-version
+          params:
+            file: image-version/number
+        - put: source
+          params:
+            repository: source
+            tag: image-version/number
+            only_tag: true
+
+  - name: ship-it
+    plan:
+      - in_parallel:
+        - get: source
+          passed: [ test-it ]
+        - get: image-version
+          trigger: true
+          params:
+            file: image-version/number
+      - task: build-image
+        privileged: true
+        file: source/ci/tasks/build-oci-image.yml
+      - load_var: image-version
+        file: image-version/version
+      - put: docker-hub
+        params:
+          image: image/image.tar
+          version: ((.:image-version))
+          bump_aliases: true
+
+resources:
+  - name: source
+    type: git
+    icon: github
+    source: &git-source
+      uri: git@github.com:suhlig/concourse-rss-resource.git
+      private_key: ((github-ssh-key))
+      branch: ((git-branch))
+
+  - name: docker-hub
+    type: registry-image
+    icon: docker
+    source:
+      repository: suhlig/concourse-rss-resource
+      username: suhlig
+      password: ((dockerhub-auth-token))
+
+  - name: image-version
+    type: semver
+    source:
+      <<: *git-source
+      driver: git
+      initial_version: 2.0.0
+      branch: meta
+      file: number

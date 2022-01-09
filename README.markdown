@@ -1,7 +1,5 @@
 # concourse-rss-resource
 
-[![Build Status](https://app.travis-ci.com/suhlig/concourse-rss-resource.svg?branch=master)](https://app.travis-ci.com/suhlig/concourse-rss-resource)
-
 [Concourse](https://concourse-ci.org/ "Concourse Homepage") [resource](https://concourse-ci.org/implementing-resources.html "Implementing a Resource") for RSS feeds. See the [example](example/README.markdown) folder for a pipeline that sends a Slack notification when a new Postgres release is available.
 
 # Resource Type Configuration
@@ -67,6 +65,13 @@ Tests assume you have a running docker daemon:
 bundle exec rake
 ```
 
+# CI
+
+```command
+$ fly -t "$CONCOURSE_TARGET" set-pipeline -p concourse-rss-resource -c ci/pipeline.yml -v git-branch=$GIT_BRANCH -l ci/private-config.yml
+```
+
+
 ## Docker Image
 
-After a `git push` to the master branch, if the build was successful, Travis [automatically pushes an updated docker image](https://docs.travis-ci.com/user/docker/#Pushing-a-Docker-Image-to-a-Registry).
+After a `git push` to the master branch, the pipeline builds the image and publishes it at Docker Hub.

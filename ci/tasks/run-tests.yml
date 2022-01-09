@@ -1,0 +1,21 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: ruby
+    tag: alpine
+
+inputs:
+  - name: source
+
+run:
+  dir: source
+  path: sh
+  args:
+  - -exc
+  - |
+    apk add --no-cache --no-progress build-base
+    bundle config set jobs $(nproc)
+    bundle install
+    bundle exec rake spec:unit spec:system:direct
