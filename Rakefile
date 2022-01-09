@@ -15,8 +15,12 @@ namespace :spec do
     t.pattern = 'spec/unit/**/*_spec.rb'
   end
 
-  RSpec::Core::RakeTask.new(:system) do |t|
-    t.pattern = 'spec/system/**/*_spec.rb'
+  namespace :system do
+    %i(direct docker).each do |type|
+      RSpec::Core::RakeTask.new(type) do |t|
+        t.pattern = "spec/system/#{type}/**/*_spec.rb"
+      end
+    end
   end
 end
 
