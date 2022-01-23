@@ -1,37 +1,28 @@
 jobs:
-  - name: test-it
+  - name: test-latest-source
     plan:
-      - in_parallel:
-        - get: source
-          trigger: true
-        - get: image-version
-          params: { bump: patch }
+      - get: latest-source
+        trigger: true
       - task: run-tests
-        file: source/ci/tasks/run-tests.yml
-      - in_parallel:
-        - put: image-version
-          params:
-            file: image-version/number
-        - put: source
-          params:
-            repository: source
-            tag: image-version/number
-            only_tag: true
+        file: latest-source/ci/tasks/run-tests.yml
+        input_mapping: { source: latest-source }
 
-  - name: ship-it
+  # Create a new tag in order to trigger this
+  - name: test-and-ship-tag
     plan:
       - in_parallel:
-        - get: source
-          passed: [ test-it ]
-        - get: image-version
+        - get: tagged-commits
           trigger: true
-          params:
-            file: image-version/number
+        - get: latest-source
+      - task: run-tests
+        file: latest-source/ci/tasks/run-tests.yml # config comes from latest
+        input_mapping: { source: tagged-commits } # code under test is the tagged source
       - task: build-image
         privileged: true
-        file: source/ci/tasks/build-oci-image.yml
+        file: tagged-commits/ci/tasks/build-oci-image.yml
+        input_mapping: { source: tagged-commits }
       - load_var: image-version
-        file: image-version/version
+        file: tagged-commits/.git/describe_ref # https://github.com/concourse/git-resource#additional-files-populated
       - put: docker-hub
         params:
           image: image/image.tar
@@ -39,13 +30,20 @@ jobs:
           bump_aliases: true
 
 resources:
-  - name: source
+  - name: latest-source
     type: git
     icon: github
     source: &git-source
       uri: git@github.com:suhlig/concourse-rss-resource.git
       private_key: ((github-ssh-key))
-      branch: ((git-branch))
+
+  - name: tagged-commits
+    type: git
+    icon: github
+    source:
+      <<: *git-source
+      fetch_tags: true
+      tag_filter: v*
 
   - name: docker-hub
     type: registry-image
@@ -54,12 +52,3 @@ resources:
       repository: suhlig/concourse-rss-resource
       username: suhlig
       password: ((dockerhub-auth-token))
-
-  - name: image-version
-    type: semver
-    source:
-      <<: *git-source
-      driver: git
-      initial_version: 2.0.0
-      branch: meta
-      file: number
