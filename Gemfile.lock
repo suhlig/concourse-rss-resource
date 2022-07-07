@@ -69,7 +69,7 @@ GEM
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
     hashdiff (1.0.1)
-    json (2.6.1)
+    json (2.6.2)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -121,7 +121,7 @@ GEM
     rspec-support (3.11.0)
     rss (0.2.9)
       rexml
-    rubocop (1.31.1)
+    rubocop (1.31.2)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
