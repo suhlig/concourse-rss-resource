@@ -99,7 +99,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    regexp_parser (2.6.2)
+    regexp_parser (2.7.0)
     rexml (3.2.5)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
@@ -121,7 +121,7 @@ GEM
     rspec-support (3.12.0)
     rss (0.2.9)
       rexml
-    rubocop (1.44.1)
+    rubocop (1.45.1)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.2.0.0)
