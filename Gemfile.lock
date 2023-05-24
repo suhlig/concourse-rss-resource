@@ -44,7 +44,7 @@ GEM
     cucumber-messages (18.0.0)
     cucumber-tag-expressions (4.1.0)
     diff-lcs (1.5.0)
-    faraday (2.7.4)
+    faraday (2.7.5)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
