@@ -103,7 +103,7 @@ GEM
       ffi (~> 1.0)
     rb-readline (0.5.5)
     regexp_parser (2.8.1)
-    rexml (3.2.5)
+    rexml (3.2.6)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -124,7 +124,7 @@ GEM
     rspec-support (3.12.0)
     rss (0.2.9)
       rexml
-    rubocop (1.55.0)
+    rubocop (1.55.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
