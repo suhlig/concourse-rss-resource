@@ -6,9 +6,33 @@ jobs:
       - task: run-tests
         file: latest-source/ci/tasks/run-tests.yml
         input_mapping: { source: latest-source }
-
-  # Create a new tag in order to trigger this
-  - name: test-and-ship-tag
+      - in_parallel:
+        - get: ruby-image
+          trigger: true
+        - get: lib
+        - get: tagged-commits
+          trigger: true
+      - load_var: ruby-version
+        file: ruby-image/tag
+      - task: build-image
+        privileged: true
+        file: lib/tasks/oci/build-image.yml
+        input_mapping: { source: latest-source }
+        params: { BUILD_ARG_RUBY_VERSION: ((.:ruby-version)) }
+      - load_var: image-version
+        file: tagged-commits/.git/describe_ref # https://github.com/concourse/git-resource#additional-files-populated
+      - in_parallel:
+        - put: ghcr
+          params:
+            image: image/image.tar
+            version: ((.:image-version))-dev
+            bump_aliases: false
+        - put: docker-hub
+          params:
+            image: image/image.tar
+            version: ((.:image-version))-dev
+            bump_aliases: false
+  - name: test-and-ship-tag # Create a new tag in order to trigger this
     plan:
       - in_parallel:
         - get: tagged-commits
@@ -17,26 +41,39 @@ jobs:
       - task: run-tests
         file: latest-source/ci/tasks/run-tests.yml # config comes from latest
         input_mapping: { source: tagged-commits } # code under test is the tagged source
+      - in_parallel:
+        - get: ruby-image
+          trigger: true
+        - get: lib
+      - load_var: ruby-version
+        file: ruby-image/tag
       - task: build-image
         privileged: true
-        file: tagged-commits/ci/tasks/build-oci-image.yml
+        file: lib/tasks/oci/build-image.yml
         input_mapping: { source: tagged-commits }
+        params: { BUILD_ARG_RUBY_VERSION: ((.:ruby-version)) }
       - load_var: image-version
         file: tagged-commits/.git/describe_ref # https://github.com/concourse/git-resource#additional-files-populated
-      - put: docker-hub
-        params:
-          image: image/image.tar
-          version: ((.:image-version))
-          bump_aliases: true
-
+      - in_parallel:
+        - put: ghcr
+          params:
+            image: image/image.tar
+            version: ((.:image-version))
+            bump_aliases: true
+          no_get: true
+        - put: docker-hub
+          params:
+            image: image/image.tar
+            version: ((.:image-version))
+            bump_aliases: true
+          no_get: true
 resources:
   - name: latest-source
     type: git
     icon: github
     source: &git-source
       uri: git@github.com:suhlig/concourse-rss-resource.git
-      private_key: ((github-ssh-key))
-
+      private_key: ((github.ssh_key))
   - name: tagged-commits
     type: git
     icon: github
@@ -44,11 +81,29 @@ resources:
       <<: *git-source
       fetch_tags: true
       tag_filter: v*
-
+  - name: lib
+    type: git
+    icon: github
+    source:
+      uri: git@github.com:suhlig/concourse-task-library.git
+      private_key: ((github.ssh_key))
+  - name: ruby-image
+    type: registry-image
+    icon: docker
+    source:
+      repository: ruby
+      variant: alpine
   - name: docker-hub
     type: registry-image
     icon: docker
     source:
       repository: suhlig/concourse-rss-resource
       username: suhlig
-      password: ((dockerhub-auth-token))
+      password: ((dockerhub.auth_token))
+  - name: ghcr
+    type: registry-image
+    icon: docker
+    source:
+      repository: ghcr.io/suhlig/concourse-rss-resource
+      username: suhlig
+      password: ((github.pat))

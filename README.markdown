@@ -9,7 +9,7 @@ resource_types:
   - name: rss-resource
     type: registry-image
     source:
-      repository: suhlig/concourse-rss-resource
+      repository: ghcr.io/suhlig/concourse-rss-resource # drop ghcr.io to fetch from docker.io
       tag: latest
 ```
 
@@ -71,7 +71,8 @@ bundle exec rake
 $ fly -t "$CONCOURSE_TARGET" set-pipeline -p concourse-rss-resource -c ci/pipeline.yml -v git-branch=$GIT_BRANCH -l ci/private-config.yml
 ```
 
+where `ci/private-config.yml` contains the secrets referenced in `pipeline.yml`.
 
-## Docker Image
+## Registry Images
 
-After a `git push` to the master branch, the pipeline builds the image and publishes it at Docker Hub.
+After a `git push` to the master branch, the pipeline builds the image and publishes it to Docker Hub and GHCR.
