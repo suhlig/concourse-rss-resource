@@ -1,5 +1,5 @@
 ARG RUBY_VERSION
-FROM ruby:${RUBY_VERSION}}
+FROM ruby:${RUBY_VERSION}
 LABEL org.opencontainers.image.source=https://github.com/suhlig/concourse-rss-resource
 
 RUN apk add --no-cache build-base && rm -rf /var/cache/apk/*
