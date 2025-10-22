@@ -125,13 +125,13 @@ GEM
     rb-readline (0.5.5)
     regexp_parser (2.11.3)
     rexml (3.4.2)
-    rspec (3.13.1)
+    rspec (3.13.2)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
       rspec-mocks (~> 3.13.0)
     rspec-collection_matchers (1.2.1)
       rspec-expectations (>= 2.99.0.beta1)
-    rspec-core (3.13.4)
+    rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -139,10 +139,10 @@ GEM
     rspec-json_matcher (0.2.0)
       amazing_print
       json
-    rspec-mocks (3.13.5)
+    rspec-mocks (3.13.6)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-support (3.13.5)
+    rspec-support (3.13.6)
     rss (0.3.1)
       rexml
     rubocop (1.81.6)
