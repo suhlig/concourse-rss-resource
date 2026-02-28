@@ -27,7 +27,7 @@ end
 namespace :docker do
   desc 'Build the image'
   task :build do
-    sh 'docker build --build-arg=RUBY_VERSION=$RUBY_VERSION -t suhlig/concourse-rss-resource:latest .'
+    sh 'docker build --build-arg=RUBY_VERSION=$RUBY_VERSION-alpine -t suhlig/concourse-rss-resource:latest .'
   end
 
   desc 'Publish the image'

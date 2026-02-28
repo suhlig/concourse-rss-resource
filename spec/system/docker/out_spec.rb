@@ -9,7 +9,7 @@ describe 'when `out` is executed in a docker container', type: 'aruba' do
   let(:container_source_file) { File.join(container_source_directory, 'resource_contents') }
 
   before do
-    `docker build --build-arg=RUBY_VERSION=$RUBY_VERSION -t suhlig/concourse-rss-resource:latest .`
+    `docker build --build-arg=RUBY_VERSION=$RUBY_VERSION-alpine -t suhlig/concourse-rss-resource:latest .`
 
     # We don't necessarily have access to the docker host's file system from
     # this test, so we create the resource contents by mounting another container
