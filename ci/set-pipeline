@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+fly \
+  --target "$CONCOURSE_TARGET" \
+  set-pipeline \
+  --pipeline concourse-rss-resource \
+  --config pipeline.yml \
+  --var git-branch="$(git branch --show-current)" \
+  --yaml-var=secrets="$SECRETS"

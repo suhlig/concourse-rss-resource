@@ -72,7 +72,7 @@ resources:
     icon: github
     source: &git-source
       uri: git@github.com:suhlig/concourse-rss-resource.git
-      private_key: ((github.ssh_key))
+      private_key: ((secrets.github.ssh_key))
   - name: tagged-commits
     type: git
     icon: github
@@ -85,7 +85,7 @@ resources:
     icon: github
     source:
       uri: git@github.com:suhlig/concourse-task-library.git
-      private_key: ((github.ssh_key))
+      private_key: ((secrets.github.ssh_key))
   - name: ruby-image
     type: registry-image
     icon: docker
@@ -98,11 +98,11 @@ resources:
     source:
       repository: suhlig/concourse-rss-resource
       username: suhlig
-      password: ((dockerhub.auth_token))
+      password: ((secrets.dockerhub.auth_token))
   - name: ghcr
     type: registry-image
     icon: docker
     source:
       repository: ghcr.io/suhlig/concourse-rss-resource
       username: suhlig
-      password: ((github.pat))
+      password: ((secrets.github.pat))
