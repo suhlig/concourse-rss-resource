@@ -4,7 +4,7 @@ require 'system/shared/check_examples'
 
 describe 'when `check` is executed in a docker container', type: 'aruba' do
   before do
-    `docker build -t suhlig/concourse-rss-resource:latest .`
+    `docker build --build-arg=RUBY_VERSION=$RUBY_VERSION -t suhlig/concourse-rss-resource:latest .`
     run_command 'docker run --rm --interactive suhlig/concourse-rss-resource /opt/resource/check'
   end
 

@@ -9,7 +9,7 @@ task default: ['spec:all']
 
 namespace :spec do
   desc 'Run all specs'
-  task all: ['rubocop:auto_correct', :unit, :'system:direct']
+  task all: ['rubocop:autocorrect', :unit, :'system:direct']
 
   RSpec::Core::RakeTask.new(:unit) do |t|
     t.pattern = 'spec/unit/**/*_spec.rb'
@@ -27,7 +27,7 @@ end
 namespace :docker do
   desc 'Build the image'
   task :build do
-    sh 'docker build -t suhlig/concourse-rss-resource:latest .'
+    sh 'docker build --build-arg=RUBY_VERSION=$RUBY_VERSION -t suhlig/concourse-rss-resource:latest .'
   end
 
   desc 'Publish the image'

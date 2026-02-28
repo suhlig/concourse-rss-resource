@@ -64,7 +64,7 @@ Concourse::Resource::RSS::Feed
     let(:feed_body) { '' }
 
     it 'complains if the content is empty' do
-      expect { subject } .to raise_error(/parse contents/)
+      expect { subject } .to raise_error(/No root element/)
     end
   end
 

@@ -9,4 +9,4 @@
 /pkg/
 /spec/reports/
 /tmp/
-ci/private-config.yml
+ci/secrets.yml

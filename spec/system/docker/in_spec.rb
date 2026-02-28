@@ -8,7 +8,7 @@ describe 'when `in` is executed in a docker container', type: 'aruba' do
   let(:container_destination_directory) { '/concourse' }
 
   before do
-    `docker build -t suhlig/concourse-rss-resource:latest .`
+    `docker build --build-arg=RUBY_VERSION=$RUBY_VERSION -t suhlig/concourse-rss-resource:latest .`
 
     run_command "docker run --rm --interactive \
          --volume #{host_destination_directory}:#{container_destination_directory} \
