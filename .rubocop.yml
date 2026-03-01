@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 3.4
+  TargetRubyVersion: 4.0
   Include:
     - '**/Gemfile'
     - '**/Guardfile'
