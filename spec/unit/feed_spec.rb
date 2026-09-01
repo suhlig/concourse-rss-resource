@@ -79,6 +79,28 @@ Concourse::Resource::RSS::Feed
       expect { subject.items }.to raise_error(/404/)
     end
   end
+
+  context 'with a feed that redirects' do
+    let(:url) { 'http://blog.golang.org/feed.atom' }
+    let(:redirect_url) { 'https://go.dev/blog/feed.atom' }
+    let(:feed_body) { fixture('feed/releases.atom') }
+
+    before do
+      stub_request(:get, url).to_return(
+        status: 302,
+        headers: {'Location' => redirect_url}
+      )
+      stub_request(:get, redirect_url).to_return(
+        status: 200,
+        body: feed_body,
+        headers: {'Content-Type' => 'application/atom+xml'}
+      )
+    end
+
+    it 'follows the redirect' do
+      expect { subject.title }.not_to raise_error
+    end
+  end
   context 'with a feed without one of the allowed" Content-Type headers' do
     context 'with a valid rss feed body' do
       let(:url) { 'https://www.postgresql.org/versions.rss' }
