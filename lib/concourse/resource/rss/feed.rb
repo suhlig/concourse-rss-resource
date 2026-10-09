@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'faraday'
+require 'faraday/follow_redirects'
 require 'concourse/resource/rss/errors'
 require 'rss'
 
@@ -11,7 +12,7 @@ module Concourse
         attr_reader :title, :items, :last_build_date, :last_item_date
 
         def initialize(url)
-          response = Faraday.get(url)
+          response = connection.get(url)
           raise FeedUnavailable, "Could not fetch URL #{url}; status is #{response.status}" if response.status != 200
 
           feed = ::RSS::Parser.parse(response.body)
@@ -33,6 +34,12 @@ module Concourse
         end
 
         private
+
+        def connection
+          @connection ||= Faraday.new do |conn|
+            conn.response :follow_redirects
+          end
+        end
 
         def handle(content_type, feed)
           case content_type

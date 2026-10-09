@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'faraday'
+gem 'faraday-follow_redirects'
 gem 'rss'
 
 group 'development' do
