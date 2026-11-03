@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" 
+     xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+     xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+     <channel>
+          <title><![CDATA[Docker Hub Images: library/alpine]]></title>
+          <description><![CDATA[A minimal Docker image based on Alpine Linux with a complete package index and only 5 MB in size!]]></description>
+          <link>https://hub.docker.com/r/library/alpine</link>
+          <generator>RSS for Node</generator>
+          <lastBuildDate>Sun, 19 Jan 2020 12:29:00 GMT</lastBuildDate>
+          <item>
+               <description><![CDATA[library/alpine:3.11.3]]></description>
+               <link>https://hub.docker.com/r/library/alpine</link>
+               <guid isPermaLink="false">83140616-1579315260881</guid>
+               <pubDate>Sat, 18 Jan 2020 02:41:00 GMT</pubDate>
+          </item>
+          <item>
+               <description><![CDATA[library/alpine:3.11]]></description>
+               <link>https://hub.docker.com/r/library/alpine</link>
+               <guid isPermaLink="false">80446357-1579315259150</guid>
+               <pubDate>Sat, 18 Jan 2020 02:40:59 GMT</pubDate>
+          </item>
+          <item>
+               <description><![CDATA[library/alpine:3]]></description>
+               <link>https://hub.docker.com/r/library/alpine</link>
+               <guid isPermaLink="false">66119067-1579315253302</guid>
+               <pubDate>Sat, 18 Jan 2020 02:40:53 GMT</pubDate>
+          </item>
+     </channel>
+</rss>
